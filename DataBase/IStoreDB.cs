@@ -8,7 +8,11 @@ namespace DiscountAggregator.DataBase
 {
     interface IStoreDB
     {
-        Store GetAll();
-        
+        List<Store> Get();
+        Store Get(string id);
+        void Add(Store newStore);
+        void Update(string id, Store updatedStore);
+        void Remove(Store removableStore);
+        void Remove(string id);
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DiscountAggregator.DataBase.DataBaseApi
 {
-    public class StoreDBSetting : IDBSetting
+    public class ProductVarietyDBSetting : IDBSetting
     {
         public string CollectionName { get; set; }
         public string ConnectionString { get; set; }

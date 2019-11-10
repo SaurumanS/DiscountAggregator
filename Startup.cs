@@ -5,6 +5,14 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProductDBSetting = DiscountAggregator.DataBase.DataBaseApi.ProductDBSetting;
+using ProductVarietyDBSetting = DiscountAggregator.DataBase.DataBaseApi.ProductVarietyDBSetting;
+using StoreDBSetting = DiscountAggregator.DataBase.DataBaseApi.StoreDBSetting;
+using ProductDB = DiscountAggregator.DataBase.ProductDB;
+using ProductVarietyDB = DiscountAggregator.DataBase.ProductVarietyDB;
+using StoreDB = DiscountAggregator.DataBase.StoreDB;
+using IDBSetting = DiscountAggregator.DataBase.DataBaseApi.IDBSetting;
+using Microsoft.Extensions.Options;
 
 namespace DiscountAggregator
 {
@@ -20,6 +28,24 @@ namespace DiscountAggregator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ProductDBSetting>(
+                Configuration.GetSection(nameof(ProductDBSetting)));
+            services.Configure<ProductVarietyDBSetting>(
+                Configuration.GetSection(nameof(ProductVarietyDBSetting)));
+            services.Configure<StoreDBSetting>(
+                Configuration.GetSection(nameof(StoreDBSetting)));
+
+            services.AddSingleton<IDBSetting>(sp =>
+        sp.GetRequiredService<IOptions<ProductDBSetting>>().Value);
+            services.AddSingleton<IDBSetting>(sp =>
+        sp.GetRequiredService<IOptions<ProductVarietyDBSetting>>().Value);
+            services.AddSingleton<IDBSetting>(sp =>
+        sp.GetRequiredService<IOptions<StoreDBSetting>>().Value);
+
+
+            services.AddSingleton<ProductDB>();
+            services.AddSingleton<ProductVarietyDB>();
+            services.AddSingleton<StoreDB>();
 
             services.AddControllersWithViews();
 
