@@ -7,7 +7,7 @@ namespace DiscountAggregator.AbstractTypes
 {
     public class ProductVariety
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; } //Alcohol, Milk Products, Fruits and Vegetables...
     }
 }
