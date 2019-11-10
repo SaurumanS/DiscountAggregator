@@ -16,16 +16,43 @@ export class Counter extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <h1>Counter</h1>
+      return (
+          <section id="contact">
 
-        <p>This is a simple example of a React component.</p>
+              <div class="social column">
+                  <h1>Cock len</h1>
 
-        <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
+                  <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong>mm</p>
 
-        <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button>
-      </div>
+                  <button className="btn btn-primary" onClick={this.incrementCounter}>+1mm</button>
+              </div>
+              <div className="row">
+                  <div className="bg-dark"></div>
+              </div>
+
+              <div class="column">
+                  <h3>Get in Touch</h3>
+                  <form action="#" method="post">
+                      <div class="field half first">
+                          <label for="name">Name</label>
+
+                      </div>
+                      <div class="field half">
+                          <label for="email">Email</label>
+
+                      </div>
+                      <div class="field">
+                          <label for="message">Message</label>
+                          <textarea name="message" id="message" rows="6" placeholder="Message"></textarea>
+                      </div>
+                      <ul class="actions">
+                          <li></li>
+                      </ul>
+                  </form>
+              </div>
+
+          </section>
+
     );
   }
 }
