@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Product = DiscountAggregator.AbstractTypes.Product;
-using IDBSetting = DiscountAggregator.DataBase.DataBaseApi.IDBSetting;
+using IProductDBSetting = DiscountAggregator.DataBase.DataBaseApi.IProductDBSetting;
 
 namespace DiscountAggregator.DataBase
 {
@@ -12,7 +12,7 @@ namespace DiscountAggregator.DataBase
     {
         private readonly IMongoCollection<Product> _products;
 
-        public ProductDB(IDBSetting settings)
+        public ProductDB(IProductDBSetting settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);

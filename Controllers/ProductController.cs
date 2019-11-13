@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Product = DiscountAggregator.AbstractTypes.Product;
-using IProductDB = DiscountAggregator.DataBase.IProductDB;
+using ProductDB = DiscountAggregator.DataBase.ProductDB;
 
 
 namespace DiscountAggregator.Controllers
@@ -15,20 +15,12 @@ namespace DiscountAggregator.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductDB _productDB;
+        private readonly ProductDB _productDB;
 
-        public ProductController(IProductDB productDB)
+        public ProductController(ProductDB productDB)
         {
             _productDB = productDB;
         }
-
-        private readonly ILogger<ProductController> _logger;
-        public ProductController(ILogger<ProductController> logger)
-        {
-            _logger = logger;
-        }
-
-
 
 
         // GET: api/Product

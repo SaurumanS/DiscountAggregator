@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace DiscountAggregator.AbstractTypes
 {
-    public class Product
+    public class Product : IProduct
     {
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-
         public string Id { get; set; }
         public string Name { get; set; }
         public int ProductVariety { get; set; } //Alcohol, Milk Products, Fruits and Vegetables... (ID)

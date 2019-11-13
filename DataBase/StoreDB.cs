@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using DiscountAggregator.AbstractTypes;
 using MongoDB.Driver;
 using Store = DiscountAggregator.AbstractTypes.Store;
-using IDBSetting = DiscountAggregator.DataBase.DataBaseApi.IDBSetting;
+using IStoreDBSetting = DiscountAggregator.DataBase.DataBaseApi.IStoreDBSetting;
 
 namespace DiscountAggregator.DataBase
 {
@@ -13,7 +13,7 @@ namespace DiscountAggregator.DataBase
     {
         private readonly IMongoCollection<Store> _stores;
         
-        public StoreDB(IDBSetting settings)
+        public StoreDB(IStoreDBSetting settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);

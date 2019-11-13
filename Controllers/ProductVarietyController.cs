@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProductVariety = DiscountAggregator.AbstractTypes.ProductVariety;
-using IProductVarietyDB = DiscountAggregator.DataBase.IProductVarietyDB;
+using ProductVarietyDB = DiscountAggregator.DataBase.ProductVarietyDB;
 
 namespace DiscountAggregator.Controllers
 {
@@ -15,17 +15,11 @@ namespace DiscountAggregator.Controllers
     public class ProductVarietyController : ControllerBase
     {
 
-        private readonly IProductVarietyDB _productvarietyDB;
+        private readonly ProductVarietyDB _productvarietyDB;
 
-        public ProductVarietyController(IProductVarietyDB productvarietyDB)
+        public ProductVarietyController(ProductVarietyDB productvarietyDB)
         {
             _productvarietyDB = productvarietyDB;
-        }
-
-        private readonly ILogger<ProductVarietyController> _logger;
-        public ProductVarietyController(ILogger<ProductVarietyController> logger)
-        {
-            _logger = logger;
         }
 
 

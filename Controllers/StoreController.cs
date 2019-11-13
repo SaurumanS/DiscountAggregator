@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store = DiscountAggregator.AbstractTypes.Store;
-using IStoreDB = DiscountAggregator.DataBase.IStoreDB;
+using StoreDB = DiscountAggregator.DataBase.StoreDB;
 
 namespace DiscountAggregator.Controllers
 {
@@ -14,23 +14,14 @@ namespace DiscountAggregator.Controllers
     [ApiController]
     public class StoreController : ControllerBase
     {
-        private readonly IStoreDB _storeDB;
+        private readonly StoreDB _storeDB;
 
-        public StoreController (IStoreDB storeDB)
+        public StoreController (StoreDB storeDB)
         {
             _storeDB = storeDB;
         }
 
         
-            
-        //IStoreDB storeDB = new IStoreDB();
-
-        private readonly ILogger<StoreController> _logger;
-        public StoreController(ILogger<StoreController> logger)
-        {
-            _logger = logger;
-        }
-
 
         // GET: api/Store
         [HttpGet]
