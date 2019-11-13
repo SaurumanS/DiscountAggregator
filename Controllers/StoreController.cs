@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store = DiscountAggregator.AbstractTypes.Store;
+using IStoreDB = DiscountAggregator.DataBase.IStoreDB;
 
 namespace DiscountAggregator.Controllers
 {
@@ -54,7 +55,7 @@ namespace DiscountAggregator.Controllers
         [HttpPost]
         public ActionResult<Store> Create(Store store)
         {
-            _storeDB.Create(store);
+            _storeDB.Add(store);
             return CreatedAtRoute("GetStore", new { id = store.Id.ToString() }, store);
         }
 

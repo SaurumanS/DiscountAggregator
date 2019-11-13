@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Product = DiscountAggregator.AbstractTypes.Product;
+using IProductDB = DiscountAggregator.DataBase.IProductDB;
 
 
 namespace DiscountAggregator.Controllers
@@ -37,7 +38,7 @@ namespace DiscountAggregator.Controllers
 
 
         // GET: api/Product/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetProduct")]
         public ActionResult<Product> Get(string id)
         {
             var product = _productDB.Get(id);
@@ -53,7 +54,7 @@ namespace DiscountAggregator.Controllers
         [HttpPost]
         public ActionResult<Product> Create(Product product)
         {
-            _productDB.Create(product);
+            _productDB.Add(product);
             return CreatedAtRoute("GetProduct", new { id = product.Id.ToString() }, product);
         }
 
