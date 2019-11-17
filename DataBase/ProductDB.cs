@@ -8,20 +8,22 @@ using IProductDBSetting = DiscountAggregator.DataBase.DataBaseApi.IProductDBSett
 
 namespace DiscountAggregator.DataBase
 {
-    public class ProductDB : IProductDB
+    public class ProductDB : AbstractDB, IProductDB
     {
         private readonly IMongoCollection<Product> _products;
 
-        public ProductDB(IProductDBSetting settings)
+        public ProductDB(IProductDBSetting settings):base(settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _products = database.GetCollection<Product>(settings.CollectionName);
+            _products = Database.GetCollection<Product>(settings.CollectionName);
         }
         public void Add(Product newProduct)
         {
             _products.InsertOne(newProduct);
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
         }
 
         public List<Product> Get()

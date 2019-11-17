@@ -8,20 +8,22 @@ using IProductVarietyDBSetting = DiscountAggregator.DataBase.DataBaseApi.IProduc
 
 namespace DiscountAggregator.DataBase
 {
-    public class ProductVarietyDB : IProductVarietyDB
+    public class ProductVarietyDB : AbstractDB, IProductVarietyDB
     {
         private readonly IMongoCollection<ProductVariety> _productVarieties;
 
-        public ProductVarietyDB(IProductVarietyDBSetting settings)
+        public ProductVarietyDB(IProductVarietyDBSetting settings): base(settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _productVarieties = database.GetCollection<ProductVariety>(settings.CollectionName);
+            _productVarieties = Database.GetCollection<ProductVariety>(settings.CollectionName);
         }
         public void Add(ProductVariety newProductVariety)
         {
             _productVarieties.InsertOne(newProductVariety);
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
         }
 
         public List<ProductVariety> Get()

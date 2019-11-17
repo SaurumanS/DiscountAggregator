@@ -14,5 +14,6 @@ namespace DiscountAggregator.DataBase
         void Update(string id, ProductVariety updatedVariety);
         void Remove(ProductVariety removableVariety);
         void Remove(string id);
+        void Clear();
     }
 }

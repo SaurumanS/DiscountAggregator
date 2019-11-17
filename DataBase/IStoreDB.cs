@@ -14,5 +14,6 @@ namespace DiscountAggregator.DataBase
         void Update(string id, Store updatedStore);
         void Remove(Store removableStore);
         void Remove(string id);
+        void Clear();
     }
 }
