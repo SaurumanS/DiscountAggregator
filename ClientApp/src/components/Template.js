@@ -54,7 +54,9 @@ export class Template extends Component {
                       <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
                   </ul>
               </div>
-
+              <div className="row">
+                  <div className="bg-dark"></div>
+              </div>
 
               <div class="column">
                   <h3>Get in Touch</h3>

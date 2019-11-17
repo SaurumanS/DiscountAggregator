@@ -43,7 +43,7 @@ export class NavMenu extends Component {
                         <NavLink ><span class="icon fas fa-shopping-basket"></span></NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink ><span class="icon fas fa-cog"></span></NavLink><i class="fas fa-cog"></i>
+                        <NavLink ><span class="icon fas fa-cog"></span></NavLink>
                     </NavItem>
                     </ul>          
             </nav>          
