@@ -25,8 +25,8 @@ namespace DiscountAggregator.Controllers
 
         // GET: api/Product
         [HttpGet]
-        public ActionResult<List<Product>> Get() =>
-            _productDB.Get();
+        public ActionResult<IEnumerable<Product>> Get() =>
+            _productDB.Get().ToList();
 
 
         // GET: api/Product/5
@@ -36,6 +36,17 @@ namespace DiscountAggregator.Controllers
             var product = _productDB.Get(id);
 
             if (product == null)
+            {
+                return NotFound();
+            }
+            return product;
+        }
+        [HttpGet("GetFromName/{name}")]
+        public ActionResult<IEnumerable<Product>> GetFromName(string name)
+        {
+            var product = _productDB.GetFromName(name).ToList();
+
+            if (product == null || product.Count==0)
             {
                 return NotFound();
             }

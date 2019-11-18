@@ -8,8 +8,9 @@ namespace DiscountAggregator.DataBase
 {
     public interface IStoreDB
     {
-        List<Store> Get();
+        IEnumerable<Store> Get();
         Store Get(string id);
+        IEnumerable<Store> GetFromName(string name);
         void Add(Store newStore);
         void Update(string id, Store updatedStore);
         void Remove(Store removableStore);

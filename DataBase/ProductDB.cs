@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Product = DiscountAggregator.AbstractTypes.Product;
 using IProductDBSetting = DiscountAggregator.DataBase.DataBaseApi.IProductDBSetting;
+using DiscountAggregator.AbstractTypes;
 
 namespace DiscountAggregator.DataBase
 {
@@ -26,7 +27,7 @@ namespace DiscountAggregator.DataBase
             throw new NotImplementedException();
         }
 
-        public List<Product> Get()
+        public IEnumerable<Product> Get()
         {
             return _products.Find(Product => true).ToList();
         }
@@ -34,6 +35,11 @@ namespace DiscountAggregator.DataBase
         public Product Get(string id)
         {
             return _products.Find<Product>(Product => Product.Id == id).FirstOrDefault();
+        }
+
+        public IEnumerable<Product> GetFromName(string name)
+        {
+            return _products.Find(Product => Product.Name == name).ToEnumerable();
         }
 
         public void Remove(Product removableProduct)

@@ -27,7 +27,7 @@ namespace DiscountAggregator.DataBase
             throw new NotImplementedException();
         }
 
-        public List<Store> Get()
+        public IEnumerable<Store> Get()
         {
            return _stores.Find(store => true).ToList();
         }
@@ -35,6 +35,11 @@ namespace DiscountAggregator.DataBase
         public Store Get(string id)
         {
             return _stores.Find<Store>(store => store.Id == id).FirstOrDefault();
+        }
+
+        public IEnumerable<Store> GetFromName(string name)
+        {
+            return _stores.Find(Product => Product.Name == name).ToEnumerable();
         }
 
         public void Remove(Store removableStore)

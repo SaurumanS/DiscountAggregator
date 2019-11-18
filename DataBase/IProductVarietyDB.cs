@@ -8,8 +8,9 @@ namespace DiscountAggregator.DataBase
 {
     public interface IProductVarietyDB
     {
-        List<ProductVariety> Get();
+        IEnumerable<ProductVariety> Get();
         ProductVariety Get(string id);
+        IEnumerable<ProductVariety> GetFromName(string name);
         void Add(ProductVariety newStore);
         void Update(string id, ProductVariety updatedVariety);
         void Remove(ProductVariety removableVariety);
