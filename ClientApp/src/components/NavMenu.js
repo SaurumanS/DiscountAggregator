@@ -38,10 +38,10 @@ export class NavMenu extends Component {
                     <NavItem>
                         <NavLink tag={Link} to="/fetch-data"><span class="icon fas fa-map-signs"></span></NavLink>
                     </NavItem>
-
                     <NavItem>
-                        <NavLink ><span class="icon fas fa-shopping-basket"></span></NavLink>
+                        <NavLink tag={Link} to="/input"><span class="icon fas fa-shopping-basket"></span></NavLink>
                     </NavItem>
+                   
                     <NavItem>
                         <NavLink ><span class="icon fas fa-cog"></span></NavLink>
                     </NavItem>
