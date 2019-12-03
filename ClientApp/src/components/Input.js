@@ -15,7 +15,7 @@ export class Input extends Component {
                 <section id="contact" >
 
                     <div class=" column">
-                       
+                        <FavouriteTeam />
                         <h3>Продукты</h3>                
                         <Product />
                       
@@ -86,11 +86,11 @@ class Product extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formValues: {},
-            Variety:[]
+            formValues: {}
+
         }
     }
-
+ 
     handleChange(event) {
         event.preventDefault();
         let formValues = this.state.formValues;
@@ -108,25 +108,17 @@ class Product extends React.Component {
     }
 
     componentDidMount() {
-        fetch("https://jsonplaceholder.typicode.com/todos/1")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        Variety: result,
-                        colors: result
-                    });
-                },
-                // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-                // чтобы не перехватывать исключения из ошибок в самих компонентах.
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
+        fetch("http://www.json-generator.com/api/json/get/bPapkonDqW?indent=2")
+            .then((response) => {
+                return response.json();
+            })
+            .then((result) => {
+                this.setState({
+                    Variety: result,
+                });
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
     render() {
@@ -140,11 +132,8 @@ class Product extends React.Component {
 
 
                 <h5>ProductVariety:</h5>
-                    <DropdownList
-                        data={this.state.Variety}
-                        value={this.state.value}
-                        onChange={value => this.setState({ value })}
-                /><br />
+                <FavouriteTeam />
+                <br />
 
                 <label> NewPrice:
                     <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.formValues["NewPrice"]} onChange={this.handleChange.bind(this)} />
@@ -299,53 +288,43 @@ class ProductType extends React.Component {
 
 
 
-class MyComponent extends React.Component {
+
+class FavouriteTeam extends Component {
+ 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            error: null,
-            isLoaded: false,
-            colors:[]
-        };
-        }
+            teams: [],
+            selectedTeam: "",
+            validationError: ""
 
-        componentDidMount() {
-            fetch("https://jsonplaceholder.typicode.com/todos/1")
-            .then(res => res.json())
-            .then(
-            (result) => {
-                this.setState({
-                    isLoaded: true,
-                    items: result.title,
-                    colors: result.title
-                });
-            },
-            // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-            // чтобы не перехватывать исключения из ошибок в самих компонентах.
-            (error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            }
-            )
         }
+    }
+    componentDidMount() {
+        fetch("http://www.json-generator.com/api/json/get/bPapkonDqW?indent=2")
+            .then((response) => {
+                return response.json();
+            })
+            .then((result) => {
+                this.setState({                 
+                    teams: result,                 
+                });
+            },).catch(error => {
+                console.log(error);
+            });
+    }
 
-        render() {
-         let {items,colors} = this.state;
-        
-            return (
-                <ul> 
-                    <li>
-                        {items}
-                    </li>
-                    <li>
-                       {colors =this.state.colors}
-                    </li>
-                )}
-            </ul>
-            );
-        
-        }
+    render() {
+        return (
+            <div>
+                <select value={this.state.selectedTeam}
+                    onChange={(e) => this.setState({ selectedTeam: e.target.value, validationError: e.target.value === "" ? "You must select your favourite team" : "" })}>
+                    {this.state.teams.map((team) => <option key={team.index} value={team.index}>{team.guid}</option>)}
+                </select>
+                <div style={{ color: 'red', marginTop: '5px' }}>
+                    {this.state.validationError}
+                </div>
+            </div>
+        )
+    }
 }
-
