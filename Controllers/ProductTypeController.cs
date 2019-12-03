@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductType = DiscountAggregator.AbstractTypes.ProductType;
+using ProductTypeDB = DiscountAggregator.DataBase.ProductTypeDB;
 
 namespace DiscountAggregator.Controllers
 {
@@ -42,7 +43,7 @@ namespace DiscountAggregator.Controllers
         [HttpGet("GetFromName/{name}")]
         public ActionResult<IEnumerable<ProductType>> GetFromName(string name)
         {
-            var productType = _ProductTypeDB.GetFromName(name).ToList();
+            var productType = _ProductTypeDB.GetFromVariety(name).ToList();
 
             if (productType == null || productType.Count == 0)
             {
