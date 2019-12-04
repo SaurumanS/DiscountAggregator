@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using DiscountAggregator.DataBase;
+using DiscountAggregator.DataBase.DataBaseApi;
+
+using Microsoft.Extensions.Options;
 
 namespace DiscountAggregator
 {
@@ -20,14 +24,34 @@ namespace DiscountAggregator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllersWithViews();
+            services.Configure<ProductDBSetting>(
+                Configuration.GetSection(nameof(ProductDBSetting)));
+            services.Configure<ProductVarietyDBSetting>(
+                Configuration.GetSection(nameof(ProductVarietyDBSetting)));
+            services.Configure<StoreDBSetting>(
+                Configuration.GetSection(nameof(StoreDBSetting)));
+
+            services.AddSingleton<IProductDBSetting>(sp =>
+        sp.GetRequiredService<IOptions<ProductDBSetting>>().Value);
+            services.AddSingleton<IProductVarietyDBSetting>(sp =>
+        sp.GetRequiredService<IOptions<ProductVarietyDBSetting>>().Value);
+            services.AddSingleton<IStoreDBSetting>(sp =>
+        sp.GetRequiredService<IOptions<StoreDBSetting>>().Value);
+
+
+            services.AddSingleton<ProductDB>();
+            services.AddSingleton<ProductVarietyDB>();
+            services.AddSingleton<StoreDB>();
+
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
