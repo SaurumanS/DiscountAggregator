@@ -15,7 +15,7 @@ export class Input extends Component {
                 <section id="contact" >
 
                     <div class=" column">
-                        <FavouriteTeam />
+                    
                         <h3>Продукты</h3>                
                         <Product />
                       
@@ -113,10 +113,20 @@ class Product extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        alert(this.state.formValues['name'] + "   " + this.state.formValues['ProductVariety'] + "   " + this.state.formValues['coconut']);
+        alert(this.state.formValues['name'] + "   " + this.state.formValues['ProductVariety'] + "   " + this.state.formValues['coconut']+" "+  this.state.selected );
     }
 
     componentDidMount() {
+        fetch("https://localhost:44393/api/Store/")
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                this.setState({ items: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
+            }).catch(error => {
+                console.log(error);
+            });
         fetch("https://localhost:44393/api/Store/")
             .then((response) => {
                 return response.json();
@@ -137,12 +147,12 @@ class Product extends React.Component {
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
 
-
                 <select value={this.state.selected}
                     onChange={(event) => this.setState({ selected: event.target.value })}>
                     {this.state.items.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
                 </select>
-                <h2>{this.state.selected}</h2>
+                
+              
                 <label> NewPrice:
                     <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.formValues["NewPrice"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
@@ -156,7 +166,11 @@ class Product extends React.Component {
                 </label><br />
 
                 <h5>Store:</h5>
-                /><br />
+                    <select value={this.state.selected}
+                        onChange={(event) => this.setState({ selected: event.target.value })}>
+                        {this.state.items.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
+                    </select>
+                <br />
 
                 <input className="btn btn-primary" type="submit" value="Submit" />
             </form>
@@ -250,10 +264,14 @@ class ProductType extends React.Component {
         super(props)
         this.state = {
             formValues: {},
-            value: 'orange' 
+            value: 'orange',
+             tech: 'select',
+            Variety: [],
+            items: [],
+            selected: "",
         }
     }
-
+   
     handleChange(event) {
         event.preventDefault();
         let formValues = this.state.formValues;
@@ -269,6 +287,18 @@ class ProductType extends React.Component {
         event.preventDefault();
         alert(this.state.formValues['name'] + "   " + this.state.formValues['logo_url'] + "   " + this.state.value);
     }
+    componentDidMount() {
+        fetch("https://localhost:44393/api/Store/")
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                this.setState({ items: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
+            }).catch(error => {
+                console.log(error);
+            });
+    }
     render() {
         return (
             <form onSubmit={this.handleSubmit.bind(this)}>
@@ -278,11 +308,11 @@ class ProductType extends React.Component {
                 </label><br />
                      
                 <h5>ProductVariety:</h5>
-                    <DropdownList
-                        data={colors}
-                        value={this.state.value}
-                        onChange={value => this.setState({ value })}
-                /><br />
+                    <select value={this.state.selected}
+                        onChange={(event) => this.setState({ selected: event.target.value })}>
+                        {this.state.items.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
+                    </select>
+                <br />
 
                 <input className="btn btn-primary" type="submit" value="Submit" />
             </form>

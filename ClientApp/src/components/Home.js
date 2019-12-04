@@ -1,11 +1,126 @@
 import React, { Component } from 'react';
+import Slider from 'infinite-react-carousel';
 
+
+export class CustomSlider extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            formValues: {},
+            tech: 'select',
+            Variety: ["https://i.ytimg.com/vi/1cQHKwWzKfc/hqdefault.jpg","https://cs7.pikabu.ru/post_img/2017/10/25/7/1508928737199228093.jpg"],
+            items: [],
+            selected: "",
+        }
+    }
+     componentDidMount() {
+        fetch("https://localhost:44393/api/Store/")
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.logo } })
+                this.setState({ items: [{ value: '', display: ''}].concat(itemsFromApi) });
+               
+                this.state.items.map((item) => this.state.Variety[item.value]=item.display)                    
+                         
+            }).catch(error => {
+                console.log(error);
+            });      
+    }
+    render() {
+        const settings = {
+            adaptiveHeight: true,
+            dots: true,
+            duration: 100,
+            slidesToShow: 3
+        };
+        return (
+            <div >
+                <Slider {...settings}>                  
+                                
+                    <div>
+                        <img src={this.state.Variety['0']}></img>
+                    </div>
+                    <div>
+                        <img src={this.state.Variety['1']}></img>
+                    </div>
+                    <div>
+                        <img src={this.state.Variety['5dd122d77433973084207b44']}></img>
+                    </div>
+                    <div>                     
+                        <img src={this.state.Variety['5dd126939cc0e70e04ad911d']}></img> 
+                    </div>
+                    <div>
+                        <img src={this.state.Variety['5dd2b78d7642ab1004869b9b']}></img> 
+                    </div>
+                    <div>
+                        <img src={this.state.Variety['5de5354748cc262e001c76dd']}></img> 
+                    </div>
+                    <div>
+                        {this.state.items.display}
+                    </div>
+                   
+                    
+                </Slider>
+            </div>
+        );
+    }
+}
 
 export class Home extends Component {
-  static displayName = Home.name;
+    static displayName = Home.name;
+    constructor(props) {
+        super(props)
+        this.state = {
+            formValues: {},
+            tech: 'select',
+            Variety: [],
+            items: [],
+            selected: "",
+        }
+    }
+    componentDidMount() {
+        fetch("https://localhost:44393/api/Store/")
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.logo } })
+                this.setState({ items: [{ value: '', display: '' }].concat(itemsFromApi) });
+            }).catch(error => {
+                console.log(error);
+            });      
+    }
 
-  render () {
-      return (
+    render() {
+        const SimpleSlider = () => (
+            <div >
+                <Slider dots >
+                    {this.state.items.map((item) =>
+                        <img key={item.value} value={item.value}
+                            src={item.display}>
+                        </img>)
+                    }        
+                    <div>
+                        <h3>1</h3>
+                    </div>
+                    <div>
+                        <h3>2</h3>
+                    </div>
+                    <div>
+                        <h3>3</h3>
+                    </div>
+                    <div>
+                        <h3>4</h3>
+                    </div>
+                    <div>
+                        <h3>5</h3>
+                    </div>
+
+                    </Slider>
+            </div>)
+          return (
           <section id="contact">
 
               <div class="social column">
@@ -30,7 +145,8 @@ export class Home extends Component {
                   </ul>
               </div> 
               <div class="column">
-                
+                  <SimpleSlider /> 
+                  <CustomSlider />
               </div>
           </section>
     
