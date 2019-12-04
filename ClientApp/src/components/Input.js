@@ -86,11 +86,15 @@ class Product extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formValues: {}
-
+            formValues: {},
+            tech: 'select',
+            Variety: [],
+            items: [],
+            selected: "",
         }
     }
- 
+
+
     handleChange(event) {
         event.preventDefault();
         let formValues = this.state.formValues;
@@ -101,21 +105,25 @@ class Product extends React.Component {
 
         this.setState({ formValues })
     }
+    handleChange2(e) {
+        this.setState({
+            tech: e.target.value
+        })
+    }
 
     handleSubmit(event) {
         event.preventDefault();
-        alert(this.state.formValues['name'] + "   " + this.state.formValues['ProductVariety'] + "   " + this.state.formValues['coconut']  );
+        alert(this.state.formValues['name'] + "   " + this.state.formValues['ProductVariety'] + "   " + this.state.formValues['coconut']);
     }
 
     componentDidMount() {
-        fetch("http://www.json-generator.com/api/json/get/bPapkonDqW?indent=2")
+        fetch("https://localhost:44393/api/Store/")
             .then((response) => {
                 return response.json();
             })
-            .then((result) => {
-                this.setState({
-                    Variety: result,
-                });
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                this.setState({ items: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
             }).catch(error => {
                 console.log(error);
             });
@@ -123,35 +131,31 @@ class Product extends React.Component {
 
     render() {
         return (
-      
             <form onSubmit={this.handleSubmit.bind(this)}>
-              
+
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
-                </label><br /> 
+                </label><br />
 
 
-                <h5>ProductVariety:</h5>
-                <FavouriteTeam />
-                <br />
-
+                <select value={this.state.selected}
+                    onChange={(event) => this.setState({ selected: event.target.value })}>
+                    {this.state.items.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
+                </select>
+                <h2>{this.state.selected}</h2>
                 <label> NewPrice:
                     <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.formValues["NewPrice"]} onChange={this.handleChange.bind(this)} />
-                </label><br />  
+                </label><br />
 
                 <label> OldPrice:
                     <input type="number" name="OldPrice" placeholder="OldPrice" value={this.state.formValues["OldPrice"]} onChange={this.handleChange.bind(this)} />
-                </label><br />  
+                </label><br />
 
                 <label> pic_url:
                     <input type="text" name="pic_url" placeholder="pic_url" value={this.state.formValues["pic_url"]} onChange={this.handleChange.bind(this)} />
-                </label><br />  
-                
+                </label><br />
+
                 <h5>Store:</h5>
-                <DropdownList
-                    data={colors}
-                    value={this.state.value}
-                    onChange={value => this.setState({ value })}
                 /><br />
 
                 <input className="btn btn-primary" type="submit" value="Submit" />
