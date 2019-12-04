@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+
 export class Home extends Component {
   static displayName = Home.name;
 
@@ -27,7 +28,10 @@ export class Home extends Component {
                       <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
                       <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
                   </ul>
-              </div>     
+              </div> 
+              <div class="column">
+                
+              </div>
           </section>
     
     );

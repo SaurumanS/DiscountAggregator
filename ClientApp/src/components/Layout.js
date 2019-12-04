@@ -10,7 +10,7 @@ export class Layout extends Component {
         <div class="page-wrap">
         <NavMenu />
         <section id="main">
-                <section id="banner">
+                
                     <div class="inner">
                         <h1>Hey, I'm Snapshot</h1>
                         <p>A fully responsive gallery template by <a href="https://templated.co">TEMPLATED</a></p>
@@ -18,7 +18,7 @@ export class Layout extends Component {
                             <li><a href="#galleries" class="button alt scrolly big">Continue</a></li>
                         </ul>
                     </div>
-                </section>
+           
                 {this.props.children}
         </section>
       </div>
