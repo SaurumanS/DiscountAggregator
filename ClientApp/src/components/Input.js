@@ -1,4 +1,8 @@
 ﻿import React, { Component } from 'react';
+import { Container } from 'reactstrap';
+import { NavMenu } from './NavMenu';
+import 'react-widgets/dist/css/react-widgets.css';
+import { DropdownList } from 'react-widgets'
 
 let colors = ['orange', 'red', 'blue', 'purple'];
 let Variety = ['orange', 'red', 'blue', 'purple'];
@@ -12,8 +16,7 @@ export class Input extends Component {
 
                     <div class=" column">
                         <FavouriteTeam />
-                        <Mongo/>
-                        <h3>Продукты</h3>             
+                        <h3>Продукты</h3>                
                         <Product />
                       
                    </div>
@@ -83,15 +86,11 @@ class Product extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formValues: {},
-            tech: 'select',
-            Variety: [],
-            items: [],
-            selected: "",
+            formValues: {}
+
         }
     }
-
-
+ 
     handleChange(event) {
         event.preventDefault();
         let formValues = this.state.formValues;
@@ -102,11 +101,6 @@ class Product extends React.Component {
 
         this.setState({ formValues })
     }
-    handleChange2(e) {
-        this.setState({
-            tech: e.target.value
-        })
-    }
 
     handleSubmit(event) {
         event.preventDefault();
@@ -114,13 +108,14 @@ class Product extends React.Component {
     }
 
     componentDidMount() {
-        fetch("https://localhost:44393/api/Store/")
+        fetch("http://www.json-generator.com/api/json/get/bPapkonDqW?indent=2")
             .then((response) => {
                 return response.json();
             })
-            .then(data => {
-                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ items: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
+            .then((result) => {
+                this.setState({
+                    Variety: result,
+                });
             }).catch(error => {
                 console.log(error);
             });
@@ -128,6 +123,7 @@ class Product extends React.Component {
 
     render() {
         return (
+      
             <form onSubmit={this.handleSubmit.bind(this)}>
               
                 <label> Name:
@@ -135,11 +131,10 @@ class Product extends React.Component {
                 </label><br /> 
 
 
-                <select value={this.state.selected}
-                    onChange={(event) => this.setState({ selected: event.target.value })}>
-                    {this.state.items.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
-                </select>
-                <h2>{this.state.selected}</h2>
+                <h5>ProductVariety:</h5>
+                <FavouriteTeam />
+                <br />
+
                 <label> NewPrice:
                     <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.formValues["NewPrice"]} onChange={this.handleChange.bind(this)} />
                 </label><br />  
@@ -153,6 +148,10 @@ class Product extends React.Component {
                 </label><br />  
                 
                 <h5>Store:</h5>
+                <DropdownList
+                    data={colors}
+                    value={this.state.value}
+                    onChange={value => this.setState({ value })}
                 /><br />
 
                 <input className="btn btn-primary" type="submit" value="Submit" />
@@ -275,6 +274,10 @@ class ProductType extends React.Component {
                 </label><br />
                      
                 <h5>ProductVariety:</h5>
+                    <DropdownList
+                        data={colors}
+                        value={this.state.value}
+                        onChange={value => this.setState({ value })}
                 /><br />
 
                 <input className="btn btn-primary" type="submit" value="Submit" />
@@ -285,72 +288,28 @@ class ProductType extends React.Component {
 
 
 
-class MyComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: null,
-            isLoaded: false,
-            colors:[]
-        };
-        }
-
-        componentDidMount() {
-            fetch("https://jsonplaceholder.typicode.com/todos/1")
-            .then(res => res.json())
-            .then(
-            (result) => {
-                this.setState({
-                    isLoaded: true,
-                    items: result.title,
-                    colors: result.title
-                });
-            },
-            // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-            // чтобы не перехватывать исключения из ошибок в самих компонентах.
-            (error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            }
-            )
-        }
-
-        render() {
-         let {items,colors} = this.state;
-        
-            return (
-                <ul> 
-                    <li>
-                        {items}
-                    </li>
-                    <li>
-                       {colors =this.state.colors}
-                    </li>
-                )}
-            </ul>
-            );
-        
-        }
-}
 
 class FavouriteTeam extends Component {
-    state = {
-        teams: [],
-        selectedTeam: "",
-        validationError: ""
-    }
+ 
+    constructor(props) {
+        super(props)
+        this.state = {
+            teams: [],
+            selectedTeam: "",
+            validationError: ""
 
+        }
+    }
     componentDidMount() {
-        fetch("http://localhost:26854/api/premiershipteams%22")
+        fetch("http://www.json-generator.com/api/json/get/bPapkonDqW?indent=2")
             .then((response) => {
                 return response.json();
             })
-            .then(data => {
-                let teamsFromApi = data.map(team => { return { value: team, display: team } })
-                this.setState({ teams: [{ value: '', display: '(Select your favourite team)' }].concat(teamsFromApi) });
-            }).catch(error => {
+            .then((result) => {
+                this.setState({                 
+                    teams: result,                 
+                });
+            },).catch(error => {
                 console.log(error);
             });
     }
@@ -360,40 +319,11 @@ class FavouriteTeam extends Component {
             <div>
                 <select value={this.state.selectedTeam}
                     onChange={(e) => this.setState({ selectedTeam: e.target.value, validationError: e.target.value === "" ? "You must select your favourite team" : "" })}>
-                    {this.state.teams.map((team) => <option key={team.value} value={team.value}>{team.display}</option>)}
+                    {this.state.teams.map((team) => <option key={team.index} value={team.index}>{team.guid}</option>)}
                 </select>
                 <div style={{ color: 'red', marginTop: '5px' }}>
                     {this.state.validationError}
                 </div>
-            </div>
-        )
-    }
-}
-class Mongo extends Component {
-    state = {
-        items: [],
-        selected: "",
-    }
-
-    componentDidMount() {
-        fetch("https://localhost:44393/api/Store/")
-            .then((response) => {
-                return response.json();
-            })
-            .then(data => {
-                this.setState({ items: data});
-            }).catch(error => {
-                console.log(error);
-            });
-    }
-
-    render() {
-        return (
-            <div>
-                <select value={this.state.selected}
-                    onChange={(event) => this.setState({ selected: event.target.value })}>
-                    {this.state.items.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-                </select>
             </div>
         )
     }
