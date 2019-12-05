@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ProductVariety = DiscountAggregator.AbstractTypes.ProductVariety;
 using IProductVarietyDBSetting = DiscountAggregator.DataBase.DataBaseApi.IProductVarietyDBSetting;
 using DiscountAggregator.AbstractTypes;
+using MongoDB.Bson;
 
 namespace DiscountAggregator.DataBase
 {
@@ -54,7 +55,7 @@ namespace DiscountAggregator.DataBase
 
         public void Update(string id, ProductVariety updatedProductVariety)
         {
-            _productVarieties.DeleteOne(ProductVariety => ProductVariety.Id == id);
+            throw new NotImplementedException();
         }
     }
 }

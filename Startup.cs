@@ -31,6 +31,8 @@ namespace DiscountAggregator
                 Configuration.GetSection(nameof(ProductVarietyDBSetting)));
             services.Configure<StoreDBSetting>(
                 Configuration.GetSection(nameof(StoreDBSetting)));
+            services.Configure<ProductTypeDBSetting>(
+                Configuration.GetSection(nameof(ProductTypeDBSetting)));
 
             services.AddSingleton<IProductDBSetting>(sp =>
         sp.GetRequiredService<IOptions<ProductDBSetting>>().Value);
@@ -38,11 +40,14 @@ namespace DiscountAggregator
         sp.GetRequiredService<IOptions<ProductVarietyDBSetting>>().Value);
             services.AddSingleton<IStoreDBSetting>(sp =>
         sp.GetRequiredService<IOptions<StoreDBSetting>>().Value);
+            services.AddSingleton<IProductTypeDBSetting>(sp =>
+        sp.GetRequiredService<IOptions<ProductTypeDBSetting>>().Value);
 
 
             services.AddSingleton<ProductDB>();
             services.AddSingleton<ProductVarietyDB>();
             services.AddSingleton<StoreDB>();
+            services.AddSingleton<ProductTypeDB>();
 
 
             // In production, the React files will be served from this directory
