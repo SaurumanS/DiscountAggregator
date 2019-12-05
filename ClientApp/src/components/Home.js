@@ -30,10 +30,10 @@ export class CustomSlider extends Component {
     }
     render() {
         const settings = {
-            adaptiveHeight: true,
+            arrows: false,
+            arrowsBlock: false,
             dots: true,
-            duration: 100,
-            slidesToShow: 3
+            slidesToShow: 4
         };
         return (
             <div >
@@ -58,15 +58,18 @@ export class CustomSlider extends Component {
                         <img src={this.state.Variety['5de5354748cc262e001c76dd']}></img> 
                     </div>
                     <div>
-                        {this.state.items.display}
+                        <h3>///////</h3>
                     </div>
-                   
+                  
                     
                 </Slider>
             </div>
         );
     }
 }
+
+
+
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -95,7 +98,7 @@ export class Home extends Component {
 
     render() {
         const SimpleSlider = () => (
-            <div >
+            <div style={{ Height: "200px" }}>
                 <Slider dots >
                     {this.state.items.map((item) =>
                         <img key={item.value} value={item.value}
@@ -105,18 +108,7 @@ export class Home extends Component {
                     <div>
                         <h3>1</h3>
                     </div>
-                    <div>
-                        <h3>2</h3>
-                    </div>
-                    <div>
-                        <h3>3</h3>
-                    </div>
-                    <div>
-                        <h3>4</h3>
-                    </div>
-                    <div>
-                        <h3>5</h3>
-                    </div>
+                  
 
                     </Slider>
             </div>)
