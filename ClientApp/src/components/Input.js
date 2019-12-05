@@ -1,8 +1,4 @@
 ﻿import React, { Component } from 'react';
-import { Container } from 'reactstrap';
-import { NavMenu } from './NavMenu';
-import 'react-widgets/dist/css/react-widgets.css';
-import { DropdownList } from 'react-widgets'
 
 let colors = ['orange', 'red', 'blue', 'purple'];
 let Variety = ['orange', 'red', 'blue', 'purple'];
@@ -112,7 +108,8 @@ class Product extends React.Component {
     handleChangeSelectedVariety(event) {
         event.preventDefault();           
 
-        this.setState({ selectedVariety: event.target.value, itemsType:[] })
+        this.setState({ selectedVariety: event.target.value, itemsType: [] })
+
         let url = "https://localhost:44393/api/ProductType/GetFromName/" + event.target.value;
         fetch(url)
             .then((response) => {
@@ -120,7 +117,8 @@ class Product extends React.Component {
             })
             .then(data => {
                 let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ itemsType: itemsFromApi });
+                this.setState({ itemsType: itemsFromApi })
+                this.setState({ selectedType: itemsFromApi.id })
             }).catch(error => {
                 console.log(error);
             });
@@ -140,8 +138,8 @@ class Product extends React.Component {
         const selectedStore = this.state.selectedStore;
 
 
-        if (Name != null && selectedVariety != null && selectedType != null && NewPrice != null && OldPrice != null && pic_url != null && selectedStore!=null) {
-            fetch('https://localhost:44393/api/Product/', {
+        if (Name != null && selectedVariety != null && selectedType != null &&  pic_url != null && selectedStore != null) {
+            fetch('https://localhost:44393/api/Product/' , {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -149,15 +147,15 @@ class Product extends React.Component {
                 },
                 body: JSON.stringify({
                     name: Name,
-                    ProductVariety: selectedVariety,
-                    ProductType: selectedType,
-                    OldPrice: OldPrice,
-                    NewPrice: NewPrice,
-                    Photo: pic_url,
-                    Store: selectedStore
+                    productvariety: this.state.selectedVariety,
+                    producttype: this.state.selectedType,
+                    oldprice: this.state.formValues['OldPrice'],
+                    newprice: this.state.formValues['NewPrice'],
+                    photo: this.state.selectedStore,
+                    store: selectedStore
                 })
             })
-            alert('good shit, bro')
+            alert('bad shit, bro')
         } else {
             alert('try again')
         }
@@ -194,7 +192,7 @@ class Product extends React.Component {
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
-
+                <h2>{this.state.selectedVariety}</h2>
                 <label>ProductVariety:
                 <select value={this.state.selectedVariety}
                         onChange={this.handleChangeSelectedVariety.bind(this)}>
@@ -202,9 +200,9 @@ class Product extends React.Component {
                     </select>
                 </label>
                 <br />
-
+                <h2>{this.state.selectedType}</h2>
                 <div >
-                    <label>ProductVariety:
+                    <label>ProductType:
                 <select value={this.state.selectedType}
                             onChange={(event) => this.setState({ selectedType: event.target.value })}>
                             {this.state.itemsType.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}

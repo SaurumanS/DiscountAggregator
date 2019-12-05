@@ -5,11 +5,11 @@
         int AmountOfDiscount { get; set; }
         string Id { get; set; }
         string Name { get; set; }
-        int NewPrice { get; set; }
-        int OldPrice { get; set; }
+        string NewPrice { get; set; }
+        string OldPrice { get; set; }
         string Photo { get; set; }
         string ProductType { get; set; }
-        int ProductVariety { get; set; }
+        string ProductVariety { get; set; }
         string Store { get; set; }
     }
 }

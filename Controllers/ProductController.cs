@@ -25,8 +25,10 @@ namespace DiscountAggregator.Controllers
 
         // GET: api/Product
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> Get() =>
-            _productDB.Get().ToList();
+        public ActionResult<IEnumerable<Product>> Get()
+        {
+            return _productDB.Get().ToList();
+        }
 
 
         // GET: api/Product/5
