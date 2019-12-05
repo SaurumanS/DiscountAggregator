@@ -117,12 +117,13 @@ class Product extends React.Component {
             })
             .then(data => {
                 let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ itemsType: itemsFromApi })
-                this.setState({ selectedType: itemsFromApi.id })
+                this.setState({ itemsType: [{ value: '', display: '(Select type)' }].concat(itemsFromApi) });
+               
             }).catch(error => {
                 console.log(error);
             });
 
+        
       
         
     }  
@@ -168,7 +169,7 @@ class Product extends React.Component {
             })
             .then(data => {
                 let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ itemsVariety: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
+                this.setState({ itemsVariety: [{ value: '', display: '(Select variety)' }].concat(itemsFromApi) });
             }).catch(error => {
                 console.log(error);
             });
@@ -179,7 +180,7 @@ class Product extends React.Component {
             })
             .then(data => {
                 let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ itemsStore: itemsFromApi });
+                this.setState({ itemsStore: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
             }).catch(error => {
                 console.log(error);
             });
@@ -193,17 +194,21 @@ class Product extends React.Component {
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
                 <h2>{this.state.selectedVariety}</h2>
+
                 <label>ProductVariety:
                 <select value={this.state.selectedVariety}
                         onChange={this.handleChangeSelectedVariety.bind(this)}>
                     {this.state.itemsVariety.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
                     </select>
                 </label>
+
                 <br />
-                <h2>{this.state.selectedType}</h2>
+
+
                 <div >
+
                     <label>ProductType:
-                <select value={this.state.selectedType}
+                        <select value={this.state.selectedType}
                             onChange={(event) => this.setState({ selectedType: event.target.value })}>
                             {this.state.itemsType.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
                         </select>
