@@ -27,23 +27,22 @@ export class NavMenu extends Component {
             <nav id="nav">                 
                 <ul>
                     <NavItem>
-                        <NavLink tag={Link} to="/"><span class="icon fas fa-home"></span></NavLink>
+                        <NavLink tag={Link} to="/"><span className="icon fas fa-home"></span></NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} to="/map"><span class="icon fas fa-fire-extinguisher"></span></NavLink>
+                        <NavLink tag={Link} to="/map"><span className="icon fas fa-fire-extinguisher"></span></NavLink>
                     </NavItem>                
                     <NavItem>
-                        <NavLink tag={Link} to="/counter"><span class="icon fas fa-shopping-basket"></span></NavLink>
+                        <NavLink tag={Link} to="/counter"><span className="icon fas fa-shopping-basket"></span></NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} to="/fetch-data"><span class="icon fas fa-map-signs"></span></NavLink>
+                        <NavLink tag={Link} to="/fetch-data"><span className="icon fas fa-map-signs"></span></NavLink>
+                    </NavItem>                                    
+                    <NavItem>
+                        <NavLink ><span className="icon fas fa-shopping-basket"></span></NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} to="/input"><span class="icon fas fa-shopping-basket"></span></NavLink>
-                    </NavItem>
-                   
-                    <NavItem>
-                        <NavLink ><span class="icon fas fa-cog"></span></NavLink>
+                        <NavLink tag={Link} to="/input"><span className="icon fas fa-cog"></span></NavLink>
                     </NavItem>
                     </ul>          
             </nav>          
@@ -51,20 +50,20 @@ export class NavMenu extends Component {
          
                 //return (
                 //  <header>
-                //    <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+                //    <Navbar classNameName="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
                 //      <Container>
                 //        <NavbarBrand tag={Link} to="/">DiscountAggregator</NavbarBrand>
-                //        <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-                //        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-                //          <ul className="navbar-nav flex-grow">
+                //        <NavbarToggler onClick={this.toggleNavbar} classNameName="mr-2" />
+                //        <Collapse classNameName="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
+                //          <ul classNameName="navbar-nav flex-grow">
                 //            <NavItem>
-                //              <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                //              <NavLink tag={Link} classNameName="text-dark" to="/">Home</NavLink>
                 //            </NavItem>
                 //            <NavItem>
-                //              <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
+                //              <NavLink tag={Link} classNameName="text-dark" to="/counter">Counter</NavLink>
                 //            </NavItem>
                 //            <NavItem>
-                //              <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
+                //              <NavLink tag={Link} classNameName="text-dark" to="/fetch-data">Fetch data</NavLink>
                 //            </NavItem>
                 //          </ul>
                 //        </Collapse>

@@ -6,36 +6,43 @@ let Variety = ['orange', 'red', 'blue', 'purple'];
 export class Input extends Component {
 
     render() {
-        return (     
+        return (  
+            <section id="main">
+
+
+                <header id="header">
+                    <div>Snapshot <span>by TEMPLATED</span></div>
+                </header>
+
             <div>
                 <section id="contact" >
 
-                    <div class=" column">
+                    <div className=" column">
                     
                         <h3>Продукты</h3>                
                         <Product />
                       
                    </div>
 
-                    <div class="social column">
+                    <div className="social column">
                         <h3>Магазин</h3>
                         <Shop />
                     </div>
                 </section>
                 <section id="contact" >
 
-                    <div class=" column">
+                    <div className=" column">
                         <h3>Вид продукта</h3>
                         <ProductVariety />
                     </div>
 
-                    <div class="social column">
+                    <div className="social column">
                         <h3>Тип продукта</h3>
                         <ProductType />
                     </div>
                 </section>
             </div>
-          
+          </section >
         );
     }
 }
@@ -160,6 +167,7 @@ class Product extends React.Component {
         } else {
             alert('try again')
         }
+
     }
 
     componentDidMount() {
@@ -193,10 +201,10 @@ class Product extends React.Component {
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
-                <h2>{this.state.selectedVariety}</h2>
+            
 
                 <label>ProductVariety:
-                <select value={this.state.selectedVariety}
+                  <select value={this.state.selectedVariety}
                         onChange={this.handleChangeSelectedVariety.bind(this)}>
                     {this.state.itemsVariety.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
                     </select>
@@ -206,7 +214,6 @@ class Product extends React.Component {
 
 
                 <div >
-
                     <label>ProductType:
                         <select value={this.state.selectedType}
                             onChange={(event) => this.setState({ selectedType: event.target.value })}>
@@ -235,7 +242,7 @@ class Product extends React.Component {
                 </label>
                 <br />
 
-                <input className="btn btn-primary" type="submit" value="Submit" />
+                <input classNameName="btn btn-primary" type="submit" value="Submit" />
             </form>
         )
     }
@@ -300,7 +307,7 @@ class Shop extends React.Component {
                     <input type="text" name="logo_url" placeholder="logo_url" value={this.state.formValues["logo_url"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
 
-                <input className="btn btn-primary" type="submit" value="Submit" />
+                <input classNameName="btn btn-primary" type="submit" value="Submit" />
             </form>
         )
     }
@@ -356,7 +363,7 @@ class ProductVariety extends React.Component {
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
 
-                <input className="btn btn-primary" type="submit" value="Submit" />
+                <input classNameName="btn btn-primary" type="submit" value="Submit" />
             </form>
         )
     }
@@ -442,7 +449,7 @@ class ProductType extends React.Component {
                     </select>
                 <br />
 
-                <input className="btn btn-primary" type="submit" value="Submit" />
+                <input classNameName="btn btn-primary" type="submit" value="Submit" />
             </form>
         )
     }
