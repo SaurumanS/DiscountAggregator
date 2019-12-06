@@ -93,5 +93,11 @@ namespace DiscountAggregator.Controllers
 
             return NoContent();
         }
+        [HttpDelete("DeleteAll")]
+        public IActionResult DeleteAll()
+        {
+            _productDB.Clear();
+            return NoContent();
+        }
     }
 }

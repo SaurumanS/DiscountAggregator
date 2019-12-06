@@ -1,0 +1,14 @@
+{"_id":{"$oid":"5dea55b9b12b743f78443324"},"Name":"Beer","VarietyID":"5dea55adb12b743f78443323"}
+{"_id":{"$oid":"5deaa710b8ead81a285fc959"},"Name":"Beef","VarietyID":"5deaa6abb8ead81a285fc957"}
+{"_id":{"$oid":"5deaa71cb8ead81a285fc95a"},"Name":"Pork","VarietyID":"5deaa6abb8ead81a285fc957"}
+{"_id":{"$oid":"5deaa72bb8ead81a285fc95b"},"Name":"Chicken","VarietyID":"5deaa6abb8ead81a285fc957"}
+{"_id":{"$oid":"5deaa776b8ead81a285fc95c"},"Name":"Whiskey","VarietyID":"5dea55adb12b743f78443323"}
+{"_id":{"$oid":"5deaa809b8ead81a285fc95e"},"Name":"Carbonated soft drinks","VarietyID":"5deaa798b8ead81a285fc95d"}
+{"_id":{"$oid":"5deaa81db8ead81a285fc95f"},"Name":"Juice","VarietyID":"5deaa798b8ead81a285fc95d"}
+{"_id":{"$oid":"5deaa829b8ead81a285fc960"},"Name":"Just Water","VarietyID":"5deaa798b8ead81a285fc95d"}
+{"_id":{"$oid":"5deaaa08b8ead81a285fc964"},"Name":"Milk","VarietyID":"5deaa5eeb8ead81a285fc954"}
+{"_id":{"$oid":"5deaaa1eb8ead81a285fc965"},"Name":"Yorgurts","VarietyID":"5deaa5eeb8ead81a285fc954"}
+{"_id":{"$oid":"5deaaa2eb8ead81a285fc966"},"Name":"Fruits","VarietyID":"5deaa603b8ead81a285fc955"}
+{"_id":{"$oid":"5deaaa35b8ead81a285fc967"},"Name":"Vegetables","VarietyID":"5deaa603b8ead81a285fc955"}
+{"_id":{"$oid":"5deaaa57b8ead81a285fc968"},"Name":"Gaben","VarietyID":"5deaa67bb8ead81a285fc956"}
+{"_id":{"$oid":"5deaaa77b8ead81a285fc969"},"Name":"Hideo Kojima","VarietyID":"5deaa67bb8ead81a285fc956"}
