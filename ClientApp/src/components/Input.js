@@ -150,13 +150,13 @@ class Product extends React.Component {
                     name: Name,
                     productvariety: this.state.selectedVariety,
                     producttype: this.state.selectedType,
-                    oldprice: this.state.formValues['OldPrice'],
-                    newprice: this.state.formValues['NewPrice'],
-                    photo: this.state.selectedStore,
+                    oldprice: OldPrice,
+                    newprice: NewPrice,
+                    photo: pic_url,
                     store: selectedStore
                 })
             })
-            alert('bad shit, bro')
+            alert('bad shit, bro');
         } else {
             alert('try again')
         }

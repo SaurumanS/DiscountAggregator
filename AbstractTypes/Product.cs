@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DiscountAggregator.AbstractTypes
 {
-    public class Product : IProduct
+    public class Product : AbstractProduct, IProduct
     {
 
         [BsonId]
@@ -18,7 +18,7 @@ namespace DiscountAggregator.AbstractTypes
         public string ProductType { get; set; } //Milk, Beer, Tea, Coffee ...
         public string OldPrice { get; set; } //Without discount
         public string NewPrice { get; set; } //With discount
-        public int AmountOfDiscount { get; set; }
+        public string AmountOfDiscount { get; set; }
         public string Photo { get; set; }
         public string Store { get; set; }
 
