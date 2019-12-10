@@ -1,76 +1,50 @@
 import React, { Component } from 'react';
 import Slider from 'infinite-react-carousel';
 
-
-export class CustomSlider extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            formValues: {},
-            tech: 'select',
-            Variety: ["https://i.ytimg.com/vi/1cQHKwWzKfc/hqdefault.jpg","https://cs7.pikabu.ru/post_img/2017/10/25/7/1508928737199228093.jpg"],
-            items: [],
-            selected: "",
-        }
-    }
-     componentDidMount() {
-        fetch("https://localhost:44393/api/Store/")
-            .then((response) => {
-                return response.json();
-            })
-            .then(data => {
-                let itemsFromApi = data.map(item => { return { value: item.id, display: item.logo } })
-                this.setState({ items: [{ value: '', display: ''}].concat(itemsFromApi) });
-               
-                this.state.items.map((item) => this.state.Variety[item.value]=item.display)                    
-                         
-            }).catch(error => {
-                console.log(error);
-            });      
-    }
+export class Carousel extends Component {
     render() {
-        const settings = {
-            arrows: false,
-            arrowsBlock: false,
-            dots: true,
-            slidesToShow: 4
-        };
         return (
-            <div >
-                <Slider {...settings}>                  
-                                
-                    <div>
-                        <img src={this.state.Variety['0']}></img>
+            <div id="video-carousel-example" class="carousel slide carousel-fade" data-ride="carousel">
+
+                <ol class="carousel-indicators">
+                    <li data-target="#video-carousel-example" data-slide-to="0" class="active"></li>
+                    <li data-target="#video-carousel-example" data-slide-to="1"></li>
+                    <li data-target="#video-carousel-example" data-slide-to="2"></li>
+                </ol>
+
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <video class="video-fluid" autoplay loop muted>
+                            <source src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4" />
+                        </video>
                     </div>
-                    <div>
-                        <img src={this.state.Variety['1']}></img>
+                    <div class="carousel-item">
+                        <video class="video-fluid" autoplay loop muted>
+                            <source src="https://mdbootstrap.com/img/video/forest.mp4" type="video/mp4" />
+                        </video>
                     </div>
-                    <div>
-                        <img src={this.state.Variety['5dd122d77433973084207b44']}></img>
+                    <div class="carousel-item">
+                        <video class="video-fluid" autoplay loop muted>
+                            <source src="https://mdbootstrap.com/img/video/Agua-natural.mp4" type="video/mp4" />
+                        </video>
                     </div>
-                    <div>                     
-                        <img src={this.state.Variety['5dd126939cc0e70e04ad911d']}></img> 
-                    </div>
-                    <div>
-                        <img src={this.state.Variety['5dd2b78d7642ab1004869b9b']}></img> 
-                    </div>
-                    <div>
-                        <img src={this.state.Variety['5de5354748cc262e001c76dd']}></img> 
-                    </div>
-                    <div>
-                        <h3>///////</h3>
-                    </div>
-                  
-                    
-                </Slider>
+                </div>
+
+                <a class="carousel-control-prev" href="#video-carousel-example" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#video-carousel-example" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+
             </div>
-        );
+            )
+
     }
+
 }
-
-
-
-
 export class Home extends Component {
     static displayName = Home.name;
     constructor(props) {
@@ -83,39 +57,30 @@ export class Home extends Component {
             selected: "",
         }
     }
-    componentDidMount() {
-        fetch("https://localhost:44393/api/Store/")
-            .then((response) => {
-                return response.json();
-            })
-            .then(data => {
-                let itemsFromApi = data.map(item => { return { value: item.id, display: item.logo } })
-                this.setState({ items: [{ value: '', display: '' }].concat(itemsFromApi) });
-            }).catch(error => {
-                console.log(error);
-            });      
-    }
+   
+   
 
-    render() {
-        const SimpleSlider = () => (
-            <div style={{ Height: "200px" }}>
-                <Slider dots >
-                    {this.state.items.map((item) =>
-                        <img key={item.value} value={item.value}
-                            src={item.display}>
-                        </img>)
-                    }        
-                    <div>
-                        <h3>1</h3>
-                    </div>
-                  
+    render() {     
+        return (
+            <section id="main">
 
-                    </Slider>
-            </div>)
-          return (
+
+                <header id="header">
+                    <div>Snapshot <span>by TEMPLATED</span></div>
+                </header>
+           <div>   	
+            <section id="banner">
+                <div className="inner">
+                    <h1>Hey, I'm DiscountAgreagator</h1>
+                        
+                    <ul className="actions">
+                            <li><a href="https://www.meme-arsenal.com/memes/6d860d9f0bb1ded1e047163c4ca75f14.jpg" className="button alt scrolly big">Continue</a></li>
+                    </ul>
+                </div>
+            </section>
           <section id="contact">
 
-              <div class="social column">
+              <div className="social column">
                   <h1>Hello, world!</h1>
                   <p>Welcome to your new single-page application, built with:</p>
                   <ul>
@@ -130,17 +95,19 @@ export class Home extends Component {
                       <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
                   </ul>
                   <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-                  <ul class="icons">
-                      <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                      <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                      <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+                  <ul className="icons">
+                      <li><a href="#" className="icon fa-twitter"><span className="label">Twitter</span></a></li>
+                      <li><a href="#" className="icon fa-facebook"><span className="label">Facebook</span></a></li>
+                      <li><a href="#" className="icon fa-instagram"><span className="label">Instagram</span></a></li>
                   </ul>
               </div> 
-              <div class="column">
-                  <SimpleSlider /> 
-                  <CustomSlider />
-              </div>
-          </section>
+                    <div className="column">
+                       <Carousel/>
+                
+                    </div>
+             </section>
+                </div>
+            </section>
     
     );
   }

@@ -5,72 +5,114 @@ export class FetchData extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { forecasts: [], loading: true };
+        this.state = { stores: [], loading_stores: true, varietys: [], loading_varietys: true, types: [], loading_types: true,  };
     }
 
     componentDidMount() {
-        this.populateWeatherData();
+        this.storesData();
     }
 
-    static renderForecastsTable(forecasts) {
+    static renderStores(stores) {
         return (
-            <div class="gallery">
-                <div class="content">
-                    {forecasts.map(forecast =>
-                        <div key={forecast.name}>
-                            <h3>{forecast.name}</h3>
-                            <img class="" src={forecast.logo}></img>
-                        </div>)}
+            <section className="row">
+                {stores.map(store =>
+                    <div class="col-12" key={store.name}>
+                        <span class="image left special"><img class="" src={store.logo}></img></span>
+                        <h3>{store.name}</h3>
+                        <p>
+                            Adipiscing dis a mus a convallis condimentum molestie penatibus iaculis  malesuada tempus vestibulum commodo habitasse suspendisse magnis.
+						</p>
+                    </div>                              
+                       )
+    }     
+            </section>
+        );
+    }
+    static renderVarietys(varietys) {
+        return (
+            <section className="row">
+                {varietys.map(variety =>
+                    <div class="col-12" key={variety.name}>
+                        <span class="image left special"><img class="" src={variety.logo}></img></span>
+                        <h3>{variety.name}</h3>
+                        <p>
+                            Adipiscing dis a mus a convallis condimentum molestie penatibus iaculis  malesuada tempus vestibulum commodo habitasse suspendisse magnis.
+						</p>
+                    </div>
+                )
+                }
+            </section>
+        );
+    }
+    static renderTypes(types) {
+        return (
+            <section className="row">
+                {types.map(type =>
+                    <div class="col-12" key={type.name}>
+                        <span class="image left special"><img class="" src={type.logo}></img></span>
+                        <h3>{type.name}</h3>
+                        <p>
+                            Adipiscing dis a mus a convallis condimentum molestie penatibus iaculis  malesuada tempus vestibulum commodo habitasse suspendisse magnis.
+						</p>
+                    </div>
+                )
+                }
+            </section>
+        );
+    }
+
+render() {
+    let contents_stores = this.state.loading_stores
+        ? <p><em>Loading...</em></p>
+        : FetchData.renderStores(this.state.stores);  
+    
+    let contents_varietys = this.state.loading_varietys
+        ? <p><em>Loading...</em></p>
+        : FetchData.renderVarietys(this.state.varietys);
+
+    let contents_types = this.state.loading_types
+        ? <p><em>Loading...</em></p>
+        : FetchData.renderTypes(this.state.types);
+    return (
+        <section id="main">
+            <header id="header">
+                <div>Snapshot <span>by TEMPLATED</span></div>
+            </header>
+            <section id="contact">
+                <div class="social column">
+                   <h3>Stores</h3>
+                    {contents_stores}
                 </div>
-            </div>
-        );
-    }
+                <div className="row">
+                    <div className="bg-dark"></div>
+                </div>
 
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : FetchData.renderForecastsTable(this.state.forecasts);
+                <div class="column">
+                    <h3>Varietys</h3>
+                    {contents_varietys}
+                    <h3>Types</h3>
+                    {contents_types}
+                </div>
 
-        return (<section id="contact">
-
-            <div class="social column">
-                <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
-                {contents}
-            </div>
-            <div className="row">
-                <div className="bg-dark"></div>
-            </div>
-
-            <div class="column">
-                <h3>Get in Touch</h3>
-                <form action="#" method="post">
-                    <div class="field half first">
-                        <label for="name">Name</label>
-
-                    </div>
-                    <div class="field half">
-                        <label for="email">Email</label>
-
-                    </div>
-                    <div class="field">
-                        <label for="message">Message</label>
-                        <textarea name="message" id="message" rows="6" placeholder="Message"></textarea>
-                    </div>
-                    <ul class="actions">
-                        <li></li>
-                    </ul>
-                </form>
-            </div>
-
+            </section>
         </section>
+    );
+}
 
-        );
+async storesData() {
+    const response = await fetch('api/store');
+    const data = await response.json();
+    this.setState({ stores: data, loading_stores: false });
     }
 
-    async populateWeatherData() {
-        const response = await fetch('api/store');
-        const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
+async varietyData() {
+    const response = await fetch('api/productvariety');
+    const data = await response.json();
+    this.setState({ varietys: data, loading_varietys: false });
     }
+async varietyData() {
+    const response = await fetch('api/producttype');
+    const data = await response.json();
+    this.setState({ types: data, loading_types: false });
+}
 }
