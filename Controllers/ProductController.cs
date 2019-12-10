@@ -25,8 +25,10 @@ namespace DiscountAggregator.Controllers
 
         // GET: api/Product
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> Get() =>
-            _productDB.Get().ToList();
+        public ActionResult<IEnumerable<Product>> Get()
+        {
+            return _productDB.Get().ToList();
+        }
 
 
         // GET: api/Product/5
@@ -89,6 +91,12 @@ namespace DiscountAggregator.Controllers
 
             _productDB.Remove(product.Id);
 
+            return NoContent();
+        }
+        [HttpDelete("DeleteAll")]
+        public IActionResult DeleteAll()
+        {
+            _productDB.Clear();
             return NoContent();
         }
     }

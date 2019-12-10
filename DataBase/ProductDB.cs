@@ -19,12 +19,12 @@ namespace DiscountAggregator.DataBase
         }
         public void Add(Product newProduct)
         {
+            newProduct.AmountOfDiscount = newProduct.DiscountCounter(newProduct.OldPrice, newProduct.NewPrice);
             _products.InsertOne(newProduct);
         }
-
         public void Clear()
         {
-            throw new NotImplementedException();
+            _products.DeleteMany(Product => true);
         }
 
         public IEnumerable<Product> Get()

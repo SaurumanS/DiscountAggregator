@@ -6,7 +6,7 @@ using ProductType = DiscountAggregator.AbstractTypes.ProductType;
 
 namespace DiscountAggregator.DataBase
 {
-    interface IProductTypeDB
+    public interface IProductTypeDB
     {
         IEnumerable<ProductType> Get();
         ProductType Get(string id);

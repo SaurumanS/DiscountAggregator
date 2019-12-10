@@ -30,7 +30,7 @@ export class NavMenu extends Component {
                         <NavLink tag={Link} to="/"><span class="icon fas fa-home"></span></NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} to="/template"><span class="icon fas fa-fire-extinguisher"></span></NavLink>
+                        <NavLink tag={Link} to="/map"><span class="icon fas fa-fire-extinguisher"></span></NavLink>
                     </NavItem>                
                     <NavItem>
                         <NavLink tag={Link} to="/counter"><span class="icon fas fa-shopping-basket"></span></NavLink>

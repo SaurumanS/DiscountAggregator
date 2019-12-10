@@ -40,10 +40,10 @@ namespace DiscountAggregator.Controllers
             }
             return productType;
         }
-        [HttpGet("GetFromName/{name}")]
-        public ActionResult<IEnumerable<ProductType>> GetFromName(string name)
+        [HttpGet("GetFromName/{varietyId}")]
+        public ActionResult<IEnumerable<ProductType>> GetFromName(string varietyId)
         {
-            var productType = _ProductTypeDB.GetFromVariety(name).ToList();
+            var productType = _ProductTypeDB.GetFromVariety(varietyId).ToList();
 
             if (productType == null || productType.Count == 0)
             {

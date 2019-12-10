@@ -1,8 +1,4 @@
 ﻿import React, { Component } from 'react';
-import { Container } from 'reactstrap';
-import { NavMenu } from './NavMenu';
-import 'react-widgets/dist/css/react-widgets.css';
-import { DropdownList } from 'react-widgets'
 
 let colors = ['orange', 'red', 'blue', 'purple'];
 let Variety = ['orange', 'red', 'blue', 'purple'];
@@ -15,7 +11,7 @@ export class Input extends Component {
                 <section id="contact" >
 
                     <div class=" column">
-                       
+                    
                         <h3>Продукты</h3>                
                         <Product />
                       
@@ -87,7 +83,14 @@ class Product extends React.Component {
         super(props)
         this.state = {
             formValues: {},
-            Variety:[]
+            tech: 'select',
+            Variety: [],
+            itemsVariety: [],
+            itemsType: [],
+            itemsStore: [],
+            selectedVariety: "",
+            selectedStore: "",
+            selectedType: "",
         }
     }
 
@@ -100,70 +103,137 @@ class Product extends React.Component {
         formValues[name] = value;
 
         this.setState({ formValues })
-    }
+    }  
+
+    handleChangeSelectedVariety(event) {
+        event.preventDefault();           
+
+        this.setState({ selectedVariety: event.target.value, itemsType: [] })
+
+        let url = "https://localhost:44393/api/ProductType/GetFromName/" + event.target.value;
+        fetch(url)
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                this.setState({ itemsType: [{ value: '', display: '(Select type)' }].concat(itemsFromApi) });
+               
+            }).catch(error => {
+                console.log(error);
+            });
+
+        
+      
+        
+    }  
 
     handleSubmit(event) {
         event.preventDefault();
-        alert(this.state.formValues['name'] + "   " + this.state.formValues['ProductVariety'] + "   " + this.state.formValues['coconut']  );
+        const Name = this.state.formValues['name'];
+        const selectedVariety = this.state.selectedVariety;
+        const selectedType = this.state.selectedType;
+        const NewPrice = this.state.formValues['NewPrice'];
+        const OldPrice = this.state.formValues['OldPrice'];
+        const pic_url = this.state.formValues['pic_url'];
+        const selectedStore = this.state.selectedStore;
+
+
+        if (Name != null && selectedVariety != null && selectedType != null &&  pic_url != null && selectedStore != null) {
+            fetch('https://localhost:44393/api/Product/' , {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: Name,
+                    productvariety: this.state.selectedVariety,
+                    producttype: this.state.selectedType,
+                    oldprice: OldPrice,
+                    newprice: NewPrice,
+                    photo: pic_url,
+                    store: selectedStore
+                })
+            })
+            alert('bad shit, bro');
+        } else {
+            alert('try again')
+        }
     }
 
     componentDidMount() {
-        fetch("https://jsonplaceholder.typicode.com/todos/1")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        Variety: result,
-                        colors: result
-                    });
-                },
-                // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-                // чтобы не перехватывать исключения из ошибок в самих компонентах.
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
+        fetch("https://localhost:44393/api/ProductVariety/")
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                this.setState({ itemsVariety: [{ value: '', display: '(Select variety)' }].concat(itemsFromApi) });
+            }).catch(error => {
+                console.log(error);
+            });
+   
+        fetch("https://localhost:44393/api/Store/")
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                this.setState({ itemsStore: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
     render() {
         return (
-      
             <form onSubmit={this.handleSubmit.bind(this)}>
-              
+
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
-                </label><br /> 
+                </label><br />
+                <h2>{this.state.selectedVariety}</h2>
+
+                <label>ProductVariety:
+                <select value={this.state.selectedVariety}
+                        onChange={this.handleChangeSelectedVariety.bind(this)}>
+                    {this.state.itemsVariety.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
+                    </select>
+                </label>
+
+                <br />
 
 
-                <h5>ProductVariety:</h5>
-                    <DropdownList
-                        data={this.state.Variety}
-                        value={this.state.value}
-                        onChange={value => this.setState({ value })}
-                /><br />
+                <div >
 
-                <label> NewPrice:
+                    <label>ProductType:
+                        <select value={this.state.selectedType}
+                            onChange={(event) => this.setState({ selectedType: event.target.value })}>
+                            {this.state.itemsType.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
+                        </select>
+                    </label>
+                </div>
+
+                <label> NewPrice:<br />
                     <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.formValues["NewPrice"]} onChange={this.handleChange.bind(this)} />
-                </label><br />  
+                </label><br />
 
-                <label> OldPrice:
+                <label> OldPrice:<br />
                     <input type="number" name="OldPrice" placeholder="OldPrice" value={this.state.formValues["OldPrice"]} onChange={this.handleChange.bind(this)} />
-                </label><br />  
+                </label><br />
 
                 <label> pic_url:
                     <input type="text" name="pic_url" placeholder="pic_url" value={this.state.formValues["pic_url"]} onChange={this.handleChange.bind(this)} />
-                </label><br />  
-                
-                <h5>Store:</h5>
-                <DropdownList
-                    data={colors}
-                    value={this.state.value}
-                    onChange={value => this.setState({ value })}
-                /><br />
+                </label><br />
+
+                <label>Store:
+                    <select value={this.state.selectedStore}
+                        onChange={(event) => this.setState({ selectedStore: event.target.value })}>
+                        {this.state.itemsStore.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
+                    </select>
+                </label>
+                <br />
 
                 <input className="btn btn-primary" type="submit" value="Submit" />
             </form>
@@ -193,7 +263,30 @@ class Shop extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        alert(this.state.formValues['name'] + "   " + this.state.formValues['logo_url'] );
+        const Name = this.state.formValues['name'];
+        const Logo = this.state.formValues['logo_url'];
+
+        if (Name != null) {
+            if (Logo != null) {
+                fetch('https://localhost:44393/api/Store/', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: this.state.formValues['name'],
+                        logo: this.state.formValues["logo_url"],
+                    })
+                })
+                alert('good shit, bro')
+            } else {
+                alert('enter logo_url')
+            }
+        } else {
+            alert('try again')
+        }
+        
     }
     render() {
         return (
@@ -235,7 +328,25 @@ class ProductVariety extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        alert(this.state.formValues['name'] + "   " + this.state.formValues['logo_url']);
+        const Name = this.state.formValues['name'];
+       
+
+        if (Name != null) {          
+            fetch('https://localhost:44393/api/ProductVariety/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: Name, 
+                })
+            })
+            alert('good shit, bro')           
+        } else {
+            alert('try again')
+        }
+
     }
     render() {
         return (
@@ -257,10 +368,14 @@ class ProductType extends React.Component {
         super(props)
         this.state = {
             formValues: {},
-            value: 'orange' 
+            value: 'orange',
+             tech: 'select',
+            Variety: [],
+            items: [],
+            selected: "",
         }
     }
-
+   
     handleChange(event) {
         event.preventDefault();
         let formValues = this.state.formValues;
@@ -272,9 +387,45 @@ class ProductType extends React.Component {
         this.setState({ formValues  })
     }
 
+
     handleSubmit(event) {
         event.preventDefault();
-        alert(this.state.formValues['name'] + "   " + this.state.formValues['logo_url'] + "   " + this.state.value);
+        const Name = this.state.formValues['name'];
+        const ProductVariety = this.state.selected;
+
+        if (Name != null) {
+            if (ProductVariety != null) {
+                fetch('https://localhost:44393/api/ProductType/', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: Name,
+                        varietyid: ProductVariety,
+                    })
+                })
+                alert('good shit, bro')
+            } else {
+                alert('enter logo_url')
+            }
+        } else {
+            alert('try again')
+        }
+
+    }
+    componentDidMount() {
+        fetch("https://localhost:44393/api/ProductVariety/")
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                this.setState({ items: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
+            }).catch(error => {
+                console.log(error);
+            });
     }
     render() {
         return (
@@ -285,67 +436,15 @@ class ProductType extends React.Component {
                 </label><br />
                      
                 <h5>ProductVariety:</h5>
-                    <DropdownList
-                        data={colors}
-                        value={this.state.value}
-                        onChange={value => this.setState({ value })}
-                /><br />
+                    <select value={this.state.selected}
+                        onChange={(event) => this.setState({ selected: event.target.value })}>
+                        {this.state.items.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
+                    </select>
+                <br />
 
                 <input className="btn btn-primary" type="submit" value="Submit" />
             </form>
         )
     }
-}
-
-
-
-class MyComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: null,
-            isLoaded: false,
-            colors:[]
-        };
-        }
-
-        componentDidMount() {
-            fetch("https://jsonplaceholder.typicode.com/todos/1")
-            .then(res => res.json())
-            .then(
-            (result) => {
-                this.setState({
-                    isLoaded: true,
-                    items: result.title,
-                    colors: result.title
-                });
-            },
-            // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-            // чтобы не перехватывать исключения из ошибок в самих компонентах.
-            (error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            }
-            )
-        }
-
-        render() {
-         let {items,colors} = this.state;
-        
-            return (
-                <ul> 
-                    <li>
-                        {items}
-                    </li>
-                    <li>
-                       {colors =this.state.colors}
-                    </li>
-                )}
-            </ul>
-            );
-        
-        }
 }
 
