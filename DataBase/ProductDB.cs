@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Product = DiscountAggregator.AbstractTypes.Product;
 using IProductDBSetting = DiscountAggregator.DataBase.DataBaseApi.IProductDBSetting;
 using DiscountAggregator.AbstractTypes;
+using MongoDB.Bson;
 
 namespace DiscountAggregator.DataBase
 {
