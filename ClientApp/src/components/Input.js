@@ -95,9 +95,12 @@ class Product extends React.Component {
             itemsVariety: [],
             itemsType: [],
             itemsStore: [],
-            selectedVariety: "",
-            selectedStore: "",
-            selectedType: "",
+            selectedVariety: null,
+            selectedStore: null,
+            selectedType: null,
+            newPrice: null,
+            oldPrice: null,
+            kostyl: true
         }
     }
 
@@ -116,20 +119,23 @@ class Product extends React.Component {
         event.preventDefault();           
 
         this.setState({ selectedVariety: event.target.value, itemsType: [] })
+        const SelectedVariety = this.state.selectedVariety;
+        const Kostyl = this.state.kostyl
+        if (SelectedVariety != null || Kostyl) {
+            let url = "api/ProductType/GetFromName/" + event.target.value;
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then(data => {
+                    let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                    this.setState({ itemsType: [{ value: null, display: '(Select type)' }].concat(itemsFromApi) });
 
-        let url = "https://localhost:44393/api/ProductType/GetFromName/" + event.target.value;
-        fetch(url)
-            .then((response) => {
-                return response.json();
-            })
-            .then(data => {
-                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ itemsType: [{ value: '', display: '(Select type)' }].concat(itemsFromApi) });
-               
-            }).catch(error => {
-                console.log(error);
-            });
-
+                }).catch(error => {
+                    console.log(error);
+                });
+            this.setState({ kostyl: false });
+        }
         
       
         
@@ -140,14 +146,14 @@ class Product extends React.Component {
         const Name = this.state.formValues['name'];
         const selectedVariety = this.state.selectedVariety;
         const selectedType = this.state.selectedType;
-        const NewPrice = this.state.formValues['NewPrice'];
-        const OldPrice = this.state.formValues['OldPrice'];
+        const NewPrice = parseFloat(this.state.newPrice);
+        const OldPrice = parseFloat(this.state.oldPrice);
         const pic_url = this.state.formValues['pic_url'];
         const selectedStore = this.state.selectedStore;
 
 
         if (Name != null && selectedVariety != null && selectedType != null &&  pic_url != null && selectedStore != null) {
-            fetch('https://localhost:44393/api/Product/' , {
+            fetch('api/Product/' , {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -155,15 +161,24 @@ class Product extends React.Component {
                 },
                 body: JSON.stringify({
                     name: Name,
-                    productvariety: this.state.selectedVariety,
-                    producttype: this.state.selectedType,
+                    productvariety: selectedVariety,
+                    producttype: selectedType,
                     oldprice: OldPrice,
                     newprice: NewPrice,
                     photo: pic_url,
                     store: selectedStore
                 })
+
             })
-            alert('It was awesome, maybe again');
+            alert(JSON.stringify({
+                name: Name,
+                productvariety: this.state.selectedVariety,
+                producttype: this.state.selectedType,
+                oldprice: OldPrice,
+                newprice: NewPrice,
+                photo: pic_url,
+                store: selectedStore
+            }));
         } else {
             alert('try again')
         }
@@ -171,27 +186,27 @@ class Product extends React.Component {
     }
 
     componentDidMount() {
-        fetch("https://localhost:44393/api/ProductVariety/")
-            .then((response) => {
-                return response.json();
-            })
-            .then(data => {
-                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ itemsVariety: [{ value: '', display: '(Select variety)' }].concat(itemsFromApi) });
-            }).catch(error => {
-                console.log(error);
-            });
-   
-        fetch("https://localhost:44393/api/Store/")
-            .then((response) => {
-                return response.json();
-            })
-            .then(data => {
-                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ itemsStore: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
-            }).catch(error => {
-                console.log(error);
-            });
+            fetch("api/ProductVariety/")
+                .then((response) => {
+                    return response.json();
+                })
+                .then(data => {
+                    let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                    this.setState({ itemsVariety: [{ value: null, display: '(Select variety)' }].concat(itemsFromApi) });
+                }).catch(error => {
+                    console.log(error);
+                });
+
+            fetch("api/Store/")
+                .then((response) => {
+                    return response.json();
+                })
+                .then(data => {
+                    let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                    this.setState({ itemsStore: [{ value: null, display: '(Select store)' }].concat(itemsFromApi) });
+                }).catch(error => {
+                    console.log(error);
+                });
     }
 
     render() {
@@ -201,7 +216,6 @@ class Product extends React.Component {
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
-            
 
                 <label>ProductVariety:
                   <select value={this.state.selectedVariety}
@@ -223,11 +237,11 @@ class Product extends React.Component {
                 </div>
 
                 <label> NewPrice:<br />
-                    <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.formValues["NewPrice"]} onChange={this.handleChange.bind(this)} />
+                    <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.newPrice} onChange={(event) => this.setState({ test1: event.target.value })} />
                 </label><br />
 
                 <label> OldPrice:<br />
-                    <input type="number" name="OldPrice" placeholder="OldPrice" value={this.state.formValues["OldPrice"]} onChange={this.handleChange.bind(this)} />
+                    <input type="number" name="OldPrice" placeholder="OldPrice" value={this.state.oldPrice} onChange={(event) => this.setState({ test2: event.target.value })} />
                 </label><br />
 
                 <label> pic_url:
@@ -275,7 +289,7 @@ class Shop extends React.Component {
 
         if (Name != null) {
             if (Logo != null) {
-                fetch('https://localhost:44393/api/Store/', {
+                fetch('api/Store/', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -286,7 +300,7 @@ class Shop extends React.Component {
                         logo: this.state.formValues["logo_url"],
                     })
                 })
-                alert('It was briliant, do it again')
+                alert('good shit, bro')
             } else {
                 alert('enter logo_url')
             }
@@ -318,7 +332,8 @@ class ProductVariety extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formValues: {}
+            formValues: {},
+            test: ''
         }
     }
 
@@ -339,7 +354,7 @@ class ProductVariety extends React.Component {
        
 
         if (Name != null) {          
-            fetch('https://localhost:44393/api/ProductVariety/', {
+            fetch('api/ProductVariety/', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -348,17 +363,28 @@ class ProductVariety extends React.Component {
                 body: JSON.stringify({
                     name: Name, 
                 })
+
+            }).then((response) => {
+                console.log("reactNativeDemo", "response get details:" + response.data);
             })
-            alert('It was briliant, do it again')           
+                .catch((error) => {
+                    console.log("axios error:", error);
+                    this.Just(error);
+                });
+            alert('good shit, bro')           
         } else {
             alert('try again')
         }
 
+
+    }
+    Just(error) {
+        this.setState({ test: error })
     }
     render() {
         return (
             <form onSubmit={this.handleSubmit.bind(this)}>
-
+                <h2>{this.state.test}</h2>
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
@@ -402,7 +428,7 @@ class ProductType extends React.Component {
 
         if (Name != null) {
             if (ProductVariety != null) {
-                fetch('https://localhost:44393/api/ProductType/', {
+                fetch('api/ProductType/', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -413,7 +439,7 @@ class ProductType extends React.Component {
                         varietyid: ProductVariety,
                     })
                 })
-                alert('It was briliant, do it again')
+                alert('good shit, bro')
             } else {
                 alert('enter logo_url')
             }
@@ -423,13 +449,13 @@ class ProductType extends React.Component {
 
     }
     componentDidMount() {
-        fetch("https://localhost:44393/api/ProductVariety/")
+        fetch("api/ProductVariety/")
             .then((response) => {
                 return response.json();
             })
             .then(data => {
                 let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ items: [{ value: '', display: '(Select store)' }].concat(itemsFromApi) });
+                this.setState({ items: [{ value: '', display: '(Select variety)' }].concat(itemsFromApi) });
             }).catch(error => {
                 console.log(error);
             });

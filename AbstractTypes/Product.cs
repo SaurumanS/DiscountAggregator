@@ -16,9 +16,9 @@ namespace DiscountAggregator.AbstractTypes
         public string Name { get; set; }
         public string ProductVariety { get; set; } //Alcohol, Milk Products, Fruits and Vegetables... (ID)
         public string ProductType { get; set; } //Milk, Beer, Tea, Coffee ...
-        public string OldPrice { get; set; } //Without discount
-        public string NewPrice { get; set; } //With discount
-        public string AmountOfDiscount { get; set; }
+        public double OldPrice { get; set; } //Without discount
+        public double NewPrice { get; set; } //With discount
+        public int AmountOfDiscount { get; set; }
         public string Photo { get; set; }
         public string Store { get; set; }
 
