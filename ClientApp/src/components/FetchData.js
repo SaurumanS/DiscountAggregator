@@ -10,6 +10,8 @@ export class FetchData extends Component {
 
     componentDidMount() {
         this.storesData();
+        this.typesData();
+        this.varietyData();
     }
 
     static renderStores(stores) {
@@ -49,7 +51,7 @@ export class FetchData extends Component {
             <section className="row">
                 {types.map(type =>
                     <div class="col-12" key={type.name}>
-                        <span class="image left special"><img class="" src={type.logo}></img></span>
+                        <span class="image left special"><img class="" src={type.photo}></img></span>
                         <h3>{type.name}</h3>
                         <p>
                             Adipiscing dis a mus a convallis condimentum molestie penatibus iaculis  malesuada tempus vestibulum commodo habitasse suspendisse magnis.
@@ -100,18 +102,18 @@ render() {
 }
 
 async storesData() {
-    const response = await fetch('api/store');
+    const response = await fetch('https://localhost:44393/api/Store');
     const data = await response.json();
     this.setState({ stores: data, loading_stores: false });
     }
 
 async varietyData() {
-    const response = await fetch('api/productvariety');
+    const response = await fetch('https://localhost:44393/api/ProductVariety');
     const data = await response.json();
     this.setState({ varietys: data, loading_varietys: false });
     }
-async varietyData() {
-    const response = await fetch('api/producttype');
+async typesData() {
+    const response = await fetch('https://localhost:44393/api/Product');
     const data = await response.json();
     this.setState({ types: data, loading_types: false });
 }

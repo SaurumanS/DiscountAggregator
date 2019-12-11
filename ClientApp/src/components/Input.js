@@ -163,7 +163,7 @@ class Product extends React.Component {
                     store: selectedStore
                 })
             })
-            alert('bad shit, bro');
+            alert('It was awesome, maybe again');
         } else {
             alert('try again')
         }
@@ -286,7 +286,7 @@ class Shop extends React.Component {
                         logo: this.state.formValues["logo_url"],
                     })
                 })
-                alert('good shit, bro')
+                alert('It was briliant, do it again')
             } else {
                 alert('enter logo_url')
             }
@@ -349,7 +349,7 @@ class ProductVariety extends React.Component {
                     name: Name, 
                 })
             })
-            alert('good shit, bro')           
+            alert('It was briliant, do it again')           
         } else {
             alert('try again')
         }
@@ -413,7 +413,7 @@ class ProductType extends React.Component {
                         varietyid: ProductVariety,
                     })
                 })
-                alert('good shit, bro')
+                alert('It was briliant, do it again')
             } else {
                 alert('enter logo_url')
             }

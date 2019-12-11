@@ -74,7 +74,7 @@ export class Home extends Component {
                     <h1>Hey, I'm DiscountAgreagator</h1>
                         
                     <ul className="actions">
-                            <li><a href="https://www.meme-arsenal.com/memes/6d860d9f0bb1ded1e047163c4ca75f14.jpg" className="button alt scrolly big">Continue</a></li>
+                                <li><a href="https://i.kym-cdn.com/entries/icons/original/000/029/827/cover5.jpg" className="button alt scrolly big">Continue</a></li>
                     </ul>
                 </div>
             </section>
