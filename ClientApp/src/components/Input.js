@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 
-let colors = ['orange', 'red', 'blue', 'purple'];
+let itemsVariety3 = ['orange', 'red', 'blue', 'purple'];
 let Variety = ['orange', 'red', 'blue', 'purple'];
 
 export class Input extends Component {
@@ -90,8 +90,6 @@ class Product extends React.Component {
         super(props)
         this.state = {
             formValues: {},
-            tech: 'select',
-            Variety: [],
             itemsVariety: [],
             itemsType: [],
             itemsStore: [],
@@ -170,15 +168,7 @@ class Product extends React.Component {
                 })
 
             })
-            alert(JSON.stringify({
-                name: Name,
-                productvariety: this.state.selectedVariety,
-                producttype: this.state.selectedType,
-                oldprice: OldPrice,
-                newprice: NewPrice,
-                photo: pic_url,
-                store: selectedStore
-            }));
+            alert("Request delivered");
         } else {
             alert('try again')
         }
@@ -300,7 +290,7 @@ class Shop extends React.Component {
                         logo: this.state.formValues["logo_url"],
                     })
                 })
-                alert('good shit, bro')
+                alert('Request delivered')
             } else {
                 alert('enter logo_url')
             }
@@ -332,8 +322,7 @@ class ProductVariety extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formValues: {},
-            test: ''
+            formValues: {}
         }
     }
 
@@ -364,27 +353,17 @@ class ProductVariety extends React.Component {
                     name: Name, 
                 })
 
-            }).then((response) => {
-                console.log("reactNativeDemo", "response get details:" + response.data);
             })
-                .catch((error) => {
-                    console.log("axios error:", error);
-                    this.Just(error);
-                });
-            alert('good shit, bro')           
+            alert('Request delivered')           
         } else {
             alert('try again')
         }
 
 
     }
-    Just(error) {
-        this.setState({ test: error })
-    }
     render() {
         return (
             <form onSubmit={this.handleSubmit.bind(this)}>
-                <h2>{this.state.test}</h2>
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
