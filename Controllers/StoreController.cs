@@ -57,6 +57,7 @@ namespace DiscountAggregator.Controllers
         [HttpPost]
         public ActionResult<Store> Create(Store store)
         {
+            return BadRequest();
             _storeDB.Add(store);
             return CreatedAtRoute("GetStore", new { id = store.Id.ToString() }, store);
         }

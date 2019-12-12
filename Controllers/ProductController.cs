@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Product = DiscountAggregator.AbstractTypes.Product;
+using ProductValidation = DiscountAggregator.AbstractTypes.Validation.ProductValidation;
 using ProductDB = DiscountAggregator.DataBase.ProductDB;
 
 
@@ -57,9 +59,22 @@ namespace DiscountAggregator.Controllers
 
         // POST: api/Product
         [HttpPost]
-        public ActionResult<Product> Create(Product product)
+        public ActionResult<Product> Create(ProductValidation product)
         {
-            _productDB.Add(product);
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(product);
+            if (!Validator.TryValidateObject(product, context, results, true))
+            {
+                foreach (var error in results)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Пользователь прошел валидацию");
+            }
+            //_productDB.Add(product);
             return CreatedAtRoute("GetProduct", new { id = product.Id.ToString() }, product);
         }
 

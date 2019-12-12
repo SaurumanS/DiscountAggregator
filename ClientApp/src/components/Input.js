@@ -98,7 +98,8 @@ class Product extends React.Component {
             selectedType: null,
             newPrice: null,
             oldPrice: null,
-            kostyl: true
+            kostyl: true,
+            error:'ee'
         }
     }
 
@@ -119,24 +120,18 @@ class Product extends React.Component {
         this.setState({ selectedVariety: event.target.value, itemsType: [] })
         const SelectedVariety = this.state.selectedVariety;
         const Kostyl = this.state.kostyl
-        if (SelectedVariety != null || Kostyl) {
-            let url = "api/ProductType/GetFromName/" + event.target.value;
-            fetch(url)
-                .then((response) => {
-                    return response.json();
-                })
-                .then(data => {
-                    let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                    this.setState({ itemsType: [{ value: null, display: '(Select type)' }].concat(itemsFromApi) });
+        let url = "api/ProductType/GetFromName/" + event.target.value;
+        fetch(url)
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                this.setState({ itemsType: [{ value: null, display: '(Select type)' }].concat(itemsFromApi) });
 
-                }).catch(error => {
-                    console.log(error);
-                });
-            this.setState({ kostyl: false });
-        }
-        
-      
-        
+            }).catch(e => {
+                this.setState({ error: e.message })
+            });
     }  
 
     handleSubmit(event) {
@@ -150,25 +145,32 @@ class Product extends React.Component {
         const selectedStore = this.state.selectedStore;
 
 
-        if (Name != null && selectedVariety != null && selectedType != null &&  pic_url != null && selectedStore != null) {
-            fetch('api/Product/' , {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: Name,
-                    productvariety: selectedVariety,
-                    producttype: selectedType,
-                    oldprice: OldPrice,
-                    newprice: NewPrice,
-                    photo: pic_url,
-                    store: selectedStore
-                })
+        if (Name != null && selectedVariety != null && selectedType != null && pic_url != null && selectedStore != null) {
+            try {
+                fetch('api/Product/', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: Name,
+                        productvariety: selectedVariety,
+                        producttype: selectedType,
+                        oldprice: OldPrice,
+                        newprice: NewPrice,
+                        photo: pic_url,
+                        store: selectedStore
+                    })
 
-            })
-            alert("Request delivered");
+                }).then((response) => console.log(response));
+            }
+            catch (e) {
+                this.setState({ error: e });
+                console.log("here");
+                console.log(e);
+            }
+         
         } else {
             alert('try again')
         }
@@ -202,14 +204,14 @@ class Product extends React.Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit.bind(this)}>
-
+                <h1>{this.state.error}</h1>
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
 
                 <label>ProductVariety:
                   <select value={this.state.selectedVariety}
-                        onChange={this.handleChangeSelectedVariety.bind(this)}>
+                        onChange={this.handleChangeSelectedVariety.bind(this)} required>
                     {this.state.itemsVariety.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
                     </select>
                 </label>
@@ -227,11 +229,11 @@ class Product extends React.Component {
                 </div>
 
                 <label> NewPrice:<br />
-                    <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.newPrice} onChange={(event) => this.setState({ test1: event.target.value })} />
+                    <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.newPrice} onChange={(event) => this.setState({ newPrice: event.target.value })} />
                 </label><br />
 
                 <label> OldPrice:<br />
-                    <input type="number" name="OldPrice" placeholder="OldPrice" value={this.state.oldPrice} onChange={(event) => this.setState({ test2: event.target.value })} />
+                    <input type="number" name="OldPrice" placeholder="OldPrice" value={this.state.oldPrice} onChange={(event) => this.setState({ oldPrice: event.target.value })} />
                 </label><br />
 
                 <label> pic_url:
