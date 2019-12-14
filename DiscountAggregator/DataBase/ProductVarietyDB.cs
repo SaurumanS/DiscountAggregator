@@ -25,7 +25,7 @@ namespace DiscountAggregator.DataBase
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            _productVarieties.DeleteMany(ProductVariety => true);
         }
 
         public IEnumerable<ProductVariety> Get()
@@ -33,9 +33,9 @@ namespace DiscountAggregator.DataBase
             return _productVarieties.Find(ProductVariety => true).ToList();
         }
 
-        public ProductVariety Get(string id)
+        public ProductVariety Get(ObjectId id)
         {
-            return _productVarieties.Find<ProductVariety>(ProductVariety => ProductVariety.Id == id).FirstOrDefault();
+            return _productVarieties.Find<ProductVariety>(ProductVariety => ObjectId.Equals(id, ProductVariety.Id)).FirstOrDefault();
         }
 
         public IEnumerable<ProductVariety> GetFromName(string name)
@@ -45,15 +45,15 @@ namespace DiscountAggregator.DataBase
 
         public void Remove(ProductVariety removableProductVariety)
         {
-            _productVarieties.DeleteOne(ProductVariety => removableProductVariety.Id == ProductVariety.Id);
+            _productVarieties.DeleteOne(ProductVariety => ObjectId.Equals(removableProductVariety.Id, ProductVariety.Id));
         }
 
-        public void Remove(string id)
+        public void Remove(ObjectId id)
         {
-            _productVarieties.DeleteOne(ProductVariety => ProductVariety.Id == id);
+            _productVarieties.DeleteOne(ProductVariety => ObjectId.Equals(id, ProductVariety.Id));
         }
 
-        public void Update(string id, ProductVariety updatedProductVariety)
+        public void Update(ObjectId id, ProductVariety updatedProductVariety)
         {
             throw new NotImplementedException();
         }

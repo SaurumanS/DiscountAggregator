@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,12 +10,12 @@ namespace DiscountAggregator.DataBase
     public interface IProductTypeDB
     {
         IEnumerable<ProductType> Get();
-        ProductType Get(string id);
-        IEnumerable<ProductType> GetFromVariety(string varietyId);
+        ProductType Get(ObjectId id);
+        IEnumerable<ProductType> GetFromVariety(ObjectId varietyId);
         void Add(ProductType newProductType);
-        void Update(string id, ProductType updatedProductType);
+        void Update(ObjectId id, ProductType updatedProductType);
         void Remove(ProductType removableProductType);
-        void Remove(string id);
+        void Remove(ObjectId id);
         void Clear();
     }
 }

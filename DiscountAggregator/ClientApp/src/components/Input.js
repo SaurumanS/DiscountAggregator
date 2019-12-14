@@ -98,8 +98,6 @@ class Product extends React.Component {
             selectedType: null,
             newPrice: null,
             oldPrice: null,
-            kostyl: true,
-            error:'ee'
         }
     }
 
@@ -119,8 +117,7 @@ class Product extends React.Component {
 
         this.setState({ selectedVariety: event.target.value, itemsType: [] })
         const SelectedVariety = this.state.selectedVariety;
-        const Kostyl = this.state.kostyl
-        let url = "api/ProductType/GetFromName/" + event.target.value;
+        let url = "api/ProductType/GetFromId/" + event.target.value;
         fetch(url)
             .then((response) => {
                 return response.json();
@@ -145,36 +142,25 @@ class Product extends React.Component {
         const selectedStore = this.state.selectedStore;
 
 
-        if (Name != null && selectedVariety != null && selectedType != null && pic_url != null && selectedStore != null) {
-            try {
-                fetch('api/Product/', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: Name,
-                        productvariety: selectedVariety,
-                        producttype: selectedType,
-                        oldprice: OldPrice,
-                        newprice: NewPrice,
-                        photo: pic_url,
-                        store: selectedStore
-                    })
+        fetch('api/Product/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: Name,
+                productvariety: selectedVariety,
+                producttype: selectedType,
+                oldprice: OldPrice,
+                newprice: NewPrice,
+                photo: pic_url,
+                store: selectedStore
+            })
 
-                }).then((response) => console.log(response));
-            }
-            catch (e) {
-                this.setState({ error: e });
-                console.log("here");
-                console.log(e);
-            }
-         
-        } else {
-            alert('try again')
-        }
+        }).then((response) => console.log(response));
 
+        
     }
 
     componentDidMount() {
@@ -279,26 +265,18 @@ class Shop extends React.Component {
         const Name = this.state.formValues['name'];
         const Logo = this.state.formValues['logo_url'];
 
-        if (Name != null) {
-            if (Logo != null) {
-                fetch('api/Store/', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: this.state.formValues['name'],
-                        logo: this.state.formValues["logo_url"],
-                    })
-                })
-                alert('Request delivered')
-            } else {
-                alert('enter logo_url')
-            }
-        } else {
-            alert('try again')
-        }
+        fetch('api/Store/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: this.state.formValues['name'],
+                photo: this.state.formValues["logo_url"],
+            })
+        })
+        alert('Request delivered')
         
     }
     render() {
@@ -344,22 +322,17 @@ class ProductVariety extends React.Component {
         const Name = this.state.formValues['name'];
        
 
-        if (Name != null) {          
-            fetch('api/ProductVariety/', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: Name, 
-                })
-
+        fetch('api/ProductVariety/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: Name,
             })
-            alert('Request delivered')           
-        } else {
-            alert('try again')
-        }
+
+        }).then((response) => console.log(response));
 
 
     }
@@ -407,26 +380,17 @@ class ProductType extends React.Component {
         const Name = this.state.formValues['name'];
         const ProductVariety = this.state.selected;
 
-        if (Name != null) {
-            if (ProductVariety != null) {
-                fetch('api/ProductType/', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: Name,
-                        varietyid: ProductVariety,
-                    })
-                })
-                alert('good shit, bro')
-            } else {
-                alert('enter logo_url')
-            }
-        } else {
-            alert('try again')
-        }
+        fetch('api/ProductType/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: Name,
+                varietyid: ProductVariety,
+            })
+        }).then((response) => console.log(response));
 
     }
     componentDidMount() {

@@ -4,8 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using DiscountAggregator.AbstractTypes.Converters; //extension method : ToObjectId
 using ProductType = DiscountAggregator.AbstractTypes.ProductType;
+using ProductTypeValidation = DiscountAggregator.AbstractTypes.Validation.ProductTypeValidation;
 using ProductTypeDB = DiscountAggregator.DataBase.ProductTypeDB;
+using MongoDB.Bson;
 
 namespace DiscountAggregator.Controllers
 {
@@ -14,9 +17,11 @@ namespace DiscountAggregator.Controllers
     public class ProductTypeController : ControllerBase
     {
         private readonly ProductTypeDB _ProductTypeDB;
+        private Func<string, bool> IdIsValid;
 
         public ProductTypeController(ProductTypeDB ProductTypeDB)
         {
+            IdIsValid = DiscountAggregator.AbstractTypes.Validation.IdValidation.IsValid;
             _ProductTypeDB = ProductTypeDB;
         }
 
@@ -32,7 +37,10 @@ namespace DiscountAggregator.Controllers
         [HttpGet("{id}", Name = "GetProductType")]
         public ActionResult<ProductType> Get(string id)
         {
-            var productType = _ProductTypeDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+            var productType = _ProductTypeDB.Get(objectId);
 
             if (productType == null)
             {
@@ -40,10 +48,13 @@ namespace DiscountAggregator.Controllers
             }
             return productType;
         }
-        [HttpGet("GetFromName/{varietyId}")]
-        public ActionResult<IEnumerable<ProductType>> GetFromName(string varietyId)
+        [HttpGet("GetFromId/{varietyId}")]
+        public ActionResult<IEnumerable<ProductType>> GetFromId(string varietyId)
         {
-            var productType = _ProductTypeDB.GetFromVariety(varietyId).ToList();
+            if (!IdIsValid(varietyId))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = varietyId.ToObjectId();
+            var productType = _ProductTypeDB.GetFromVariety(ObjectId.Parse(varietyId)).ToList();
 
             if (productType == null || productType.Count == 0)
             {
@@ -54,40 +65,56 @@ namespace DiscountAggregator.Controllers
 
         // POST: api/ProductType
         [HttpPost]
-        public ActionResult<ProductType> Create(ProductType ProductType)
+        public ActionResult<ProductTypeValidation> Create(ProductTypeValidation productType)
         {
-            _ProductTypeDB.Add(ProductType);
-            return CreatedAtRoute("GetProductType", new { id = ProductType.Id.ToString() }, ProductType);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _ProductTypeDB.Add((ProductType) productType);
+            return Ok();
         }
 
         // PUT: api/ProductType/5
         [HttpPut("{id}")]
         public IActionResult Update(string id, ProductType ProductTypeIn)
         {
-            var ProductType = _ProductTypeDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+            var ProductType = _ProductTypeDB.Get(objectId);
 
             if (ProductType == null)
             {
                 return NotFound();
             }
-            _ProductTypeDB.Update(id, ProductTypeIn);
+            _ProductTypeDB.Update(objectId, ProductTypeIn);
 
-            return NoContent();
+            return Ok();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            var ProductType = _ProductTypeDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+
+            var ProductType = _ProductTypeDB.Get(objectId);
 
             if (ProductType == null)
             {
                 return NotFound();
             }
 
-            _ProductTypeDB.Remove(ProductType.Id);
+            _ProductTypeDB.Remove(ProductType);
 
+            return Ok();
+        }
+        [HttpDelete("DeleteAll")]
+        public IActionResult DeleteAll()
+        {
+            _ProductTypeDB.Clear();
             return NoContent();
         }
     }

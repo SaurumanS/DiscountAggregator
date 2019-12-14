@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,31 +10,14 @@ namespace DiscountAggregator.AbstractTypes.Validation
 {
     public abstract class AbstractValidation
     {
-        protected bool IdIsValid(string id)
+        public int DiscountCounter(double oldPrice, double newPrice)
         {
-            ObjectId objectId;
-            bool check = ObjectId.TryParse(id,out objectId);
-            return check;
+            double _old = oldPrice;
+            double _new = newPrice;
+            double result;
+            if (_new <= _old) result = (_new / _old) * 100;
+            else result = (_old / _new) * 100;
+            return -(Convert.ToInt32(100 - result));
         }
-        bool IsPageExists(string url)
-        {
-            try
-            {
-                WebClient client = new WebClient();
-                client.DownloadString(url);
-            }
-            catch (WebException ex)
-            {
-                HttpWebResponse response = ex.Response != null ? ex.Response as HttpWebResponse : null;
-                if (response != null && response.StatusCode == HttpStatusCode.NotFound)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        protected bool stringIsNullOrEmpty(string line) => string.IsNullOrEmpty(line);
-        public abstract bool IsValid();
     }
 }

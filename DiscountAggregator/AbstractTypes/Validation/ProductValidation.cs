@@ -1,65 +1,78 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Product = DiscountAggregator.AbstractTypes.Product;
 
 namespace DiscountAggregator.AbstractTypes.Validation
 {
-    public class ProductValidation : AbstractValidation, IProduct, IValidatableObject
+    public class ProductValidation : AbstractValidation, IProduct
     {
-        public int AmountOfDiscount { get; set; }
         public string Id { get; set; }
-        public string Name { get; set; }
-        public double NewPrice { get; set; }
-        public double OldPrice { get; set; }
-        public string Photo { get; set; }
-        public string ProductType { get; set; }
-        public string ProductVariety { get; set; }
-        public string Store { get; set; }
 
-        public override bool IsValid()
+        [Required(ErrorMessage = "Name is null")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "ProductVariety Id is null")]
+        [IdValidation(ErrorMessage = "Product Variety Id is incorrect. Check him.")]
+        public string ProductVariety { get; set; } //Alcohol, Milk Products, Fruits and Vegetables... (ID)
+
+        
+        [Required(ErrorMessage = "ProductType Id is null")]
+        [IdValidation(ErrorMessage = "Product Type Id is incorrect. Check him.")]
+        public string ProductType { get; set; } //Milk, Beer, Tea, Coffee ... (ID)
+
+        private double oldPrice = Double.NaN;
+        [Required(ErrorMessage = "OldPrice is null")]
+        public double OldPrice //Without discount
         {
-            throw new NotImplementedException();
+            get => oldPrice;
+            set
+            {
+                oldPrice = value;
+                if(!Double.IsNaN(NewPrice))
+                    AmountOfDiscount = DiscountCounter(oldPrice, NewPrice);
+            }
         }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        private double newPrice = Double.NaN;
+        [Required(ErrorMessage = "NewPrice is null")]
+        public double NewPrice //With discount
         {
-            List<ValidationResult> errors = new List<ValidationResult>();
+            get => newPrice;
+            set
+            {
+                newPrice = value;
+                if (!Double.IsNaN(OldPrice))
+                    AmountOfDiscount = DiscountCounter(OldPrice, newPrice);
+            }
+        }
+        public int AmountOfDiscount { get; set; }
 
-            bool idIsNull = stringIsNullOrEmpty(Id);
-            if (idIsNull)
-                errors.Add(new ValidationResult("Id is null or empty"));
-            bool nameIsNull = stringIsNullOrEmpty(Name);
-            if (nameIsNull)
-                errors.Add(new ValidationResult("Name is null or empty"));
-            bool photoIsNull = stringIsNullOrEmpty(Photo);
-            if (photoIsNull)
-                errors.Add(new ValidationResult("Photo path is null or empty"));
-            bool productVarietyIsNull = stringIsNullOrEmpty(ProductVariety);
-            if (productVarietyIsNull)
-                errors.Add(new ValidationResult("Product Variety is null or empty"));
-            bool productTypeIsNull = stringIsNullOrEmpty(ProductType);
-            if (productTypeIsNull)
-                errors.Add(new ValidationResult("Product Type is null or empty"));
-            bool storeIsNull = stringIsNullOrEmpty(Store);
-            if (storeIsNull)
-                errors.Add(new ValidationResult("Store is null or empty"));
+        [Required(ErrorMessage = "Photo url is null")]
+        [Url(ErrorMessage = "Url is not correct")]
+        public string Photo { get; set; }
 
-            bool idIsValid = IdIsValid(Id);
-            if (idIsValid)
-                errors.Add(new ValidationResult("Id is not valid"));
-            bool productVarietyIsValid = IdIsValid(ProductVariety);
-            if (productVarietyIsValid)
-                errors.Add(new ValidationResult("Product Variety ID is not correct"));
-            bool productTypeIsValid = IdIsValid(ProductType);
-            if (productTypeIsValid)
-                errors.Add(new ValidationResult("Product Type ID is not correct"));
-            bool storeIsValid = IdIsValid(Store);
-            if (storeIsValid)
-                errors.Add(new ValidationResult("Store ID is not correct"));
+        [Required(ErrorMessage = "Store Id is null")]
+        [IdValidation(ErrorMessage ="Store Id is incorrect. Check him.")]
+        public string Store { get; set; } //ID
 
-            return errors;
+        public static explicit operator Product(ProductValidation productValidation)
+        {
+            Product product = new Product();
+            product.Name = productValidation.Name;
+            product.NewPrice = productValidation.NewPrice;
+            product.OldPrice = productValidation.OldPrice;
+            product.Photo = productValidation.Photo;
+            product.ProductType = productValidation.ProductType;
+            product.ProductVariety = productValidation.ProductVariety;
+            product.Store = productValidation.Store;
+            product.AmountOfDiscount = productValidation.AmountOfDiscount;
+
+            return product;
         }
     }
 }

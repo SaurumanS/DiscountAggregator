@@ -1,4 +1,4 @@
-{"_id":{"$oid":"5dea562bb12b743f78443325"},"Name":"Metro","Logo":"https://yandex.ru/images/search?pos=47&from=tabbar&img_url=https%3A%2F%2Fwww.eat-berlin.de%2Fwp-content%2Fuploads%2Fmetro-logo-1024x768.jpg&text=metro+store&rpt=simage"}
-{"_id":{"$oid":"5deaa2cab8ead81a285fc952"},"Name":"Magnit","Logo":"https://im.kommersant.ru/gboxtexts/sp_com/logos/009.jpg"}
-{"_id":{"$oid":"5deaa2edb8ead81a285fc953"},"Name":"Steam","Logo":"https://img.rg.ru/img/content/166/90/71/IMG-20190322-WA0001_d_850.jpg"}
-{"_id":{"$oid":"5deaa8ddb8ead81a285fc961"},"Name":"RealStuff","Logo":"https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/28/28742bfd61248e77529b43727e093fb844219bb4_full.jpg"}
+{"_id":{"$oid":"5dea562bb12b743f78443325"},"Name":"Metro","Photo":"https://yandex.ru/images/search?pos=47&from=tabbar&img_url=https%3A%2F%2Fwww.eat-berlin.de%2Fwp-content%2Fuploads%2Fmetro-Photo-1024x768.jpg&text=metro+store&rpt=simage"}
+{"_id":{"$oid":"5deaa2cab8ead81a285fc952"},"Name":"Magnit","Photo":"https://im.kommersant.ru/gboxtexts/sp_com/Photos/009.jpg"}
+{"_id":{"$oid":"5deaa2edb8ead81a285fc953"},"Name":"Steam","Photo":"https://img.rg.ru/img/content/166/90/71/IMG-20190322-WA0001_d_850.jpg"}
+{"_id":{"$oid":"5deaa8ddb8ead81a285fc961"},"Name":"RealStuff","Photo":"https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/28/28742bfd61248e77529b43727e093fb844219bb4_full.jpg"}

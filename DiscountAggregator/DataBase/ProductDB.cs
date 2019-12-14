@@ -20,7 +20,6 @@ namespace DiscountAggregator.DataBase
         }
         public void Add(Product newProduct)
         {
-            newProduct.AmountOfDiscount = newProduct.DiscountCounter(newProduct.OldPrice, newProduct.NewPrice);
             _products.InsertOne(newProduct);
         }
         public void Clear()
@@ -33,9 +32,10 @@ namespace DiscountAggregator.DataBase
             return _products.Find(Product => true).ToList();
         }
 
-        public Product Get(string id)
+        public Product Get(ObjectId id)
         {
-            return _products.Find<Product>(Product => Product.Id == id).FirstOrDefault();
+            if(id == null) throw new ArgumentException("id is null or empty");
+            return _products.Find<Product>(Product => ObjectId.Equals(id, Product.Id)).FirstOrDefault();
         }
 
         public IEnumerable<Product> GetFromName(string name)
@@ -45,17 +45,18 @@ namespace DiscountAggregator.DataBase
 
         public void Remove(Product removableProduct)
         {
-            _products.DeleteOne(Product => removableProduct.Id == Product.Id);
+            _products.DeleteOne(Product =>  ObjectId.Equals(removableProduct.Id, Product.Id));
         }
 
-        public void Remove(string id)
+        public void Remove(ObjectId id)
         {
-            _products.DeleteOne(Product => Product.Id == id);
+            if (id == null) throw new ArgumentException("id is null or empty");
+            _products.DeleteOne(Product => ObjectId.Equals(id, Product.Id));
         }
 
-        public void Update(string id, Product updatedProduct)
+        public void Update(ObjectId id, Product updatedProduct)
         {
-            _products.DeleteOne(Product => Product.Id == id);
+            _products.DeleteOne(Product => ObjectId.Equals(id, Product.Id));
         }
     }
 }

@@ -6,6 +6,7 @@ using DiscountAggregator.AbstractTypes;
 using MongoDB.Driver;
 using Store = DiscountAggregator.AbstractTypes.Store;
 using IStoreDBSetting = DiscountAggregator.DataBase.DataBaseApi.IStoreDBSetting;
+using MongoDB.Bson;
 
 namespace DiscountAggregator.DataBase
 {
@@ -24,7 +25,7 @@ namespace DiscountAggregator.DataBase
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            _stores.DeleteMany(Product => true);
         }
 
         public IEnumerable<Store> Get()
@@ -32,9 +33,9 @@ namespace DiscountAggregator.DataBase
            return _stores.Find(store => true).ToList();
         }
 
-        public Store Get(string id)
+        public Store Get(ObjectId id)
         {
-            return _stores.Find<Store>(store => store.Id == id).FirstOrDefault();
+            return _stores.Find<Store>(store => ObjectId.Equals(id, store.Id)).FirstOrDefault();
         }
 
         public IEnumerable<Store> GetFromName(string name)
@@ -44,17 +45,17 @@ namespace DiscountAggregator.DataBase
 
         public void Remove(Store removableStore)
         {
-            _stores.DeleteOne(store => removableStore.Id == store.Id);
+            _stores.DeleteOne(store => ObjectId.Equals(removableStore.Id, store.Id));
         }
 
-        public void Remove(string id)
+        public void Remove(ObjectId id)
         {
-            _stores.DeleteOne(store => store.Id == id);
+            _stores.DeleteOne(store => ObjectId.Equals(id, store.Id));
         }
 
-        public void Update(string id, Store updatedStore)
+        public void Update(ObjectId id, Store updatedStore)
         {
-            _stores.DeleteOne(store => store.Id == id);
+            _stores.DeleteOne(store => ObjectId.Equals(id, store.Id));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DiscountAggregator.AbstractTypes;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using IProductTypeDBSetting = DiscountAggregator.DataBase.DataBaseApi.IProductTypeDBSetting;
 
@@ -24,7 +25,7 @@ namespace DiscountAggregator.DataBase
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            _productTypes.DeleteMany(ProductType => true);
         }
 
         public IEnumerable<ProductType> Get()
@@ -32,31 +33,31 @@ namespace DiscountAggregator.DataBase
             return _productTypes.Find(ProductType => true).ToList();
         }
 
-        public ProductType Get(string id)
+        public ProductType Get(ObjectId id)
         {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentException("id is null or empty");
-            return _productTypes.Find(ProductType => ProductType.Id == id).FirstOrDefault();
+            if (id == null) throw new ArgumentException("id is null or empty");
+            return _productTypes.Find(ProductType => ObjectId.Equals(id, ProductType.Id)).FirstOrDefault();
         }
 
-        public IEnumerable<ProductType> GetFromVariety(string varietyId)
+        public IEnumerable<ProductType> GetFromVariety(ObjectId varietyId)
         {
-            if (string.IsNullOrEmpty(varietyId)) throw new ArgumentException("VatietyID is null or empty");
-            return _productTypes.Find(ProductType => ProductType.VarietyID == varietyId).ToList();
+            if (varietyId == null) throw new ArgumentException("VatietyID is null or empty");
+            return _productTypes.Find(ProductType => ObjectId.Equals(ProductType.VarietyID, varietyId)).ToList();
         }
 
         public void Remove(ProductType removableProductType)
         {
             if(removableProductType == null) throw new ArgumentException("removableProductType is null or empty");
-            _productTypes.DeleteOne(ProductVariety => removableProductType.Id == ProductVariety.Id);
+            _productTypes.DeleteOne(ProductVariety => ObjectId.Equals(removableProductType.Id, ProductVariety.Id));
         }
 
-        public void Remove(string id)
+        public void Remove(ObjectId id)
         {
-            if (string.IsNullOrEmpty(id)) throw new ArgumentException("id is null or empty");
-            _productTypes.DeleteOne(ProductType => ProductType.Id == id);
+            if (id == null) throw new ArgumentException("id is null or empty");
+            _productTypes.DeleteOne(ProductType => ObjectId.Equals(ProductType.Id, id));
         }
 
-        public void Update(string id, ProductType updatedProductType)
+        public void Update(ObjectId id, ProductType updatedProductType)
         {
             throw new NotImplementedException();
         }

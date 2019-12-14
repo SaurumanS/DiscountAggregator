@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using DiscountAggregator.AbstractTypes.Converters; //extension method : ToObjectId
 using Store = DiscountAggregator.AbstractTypes.Store;
+using StoreValidation = DiscountAggregator.AbstractTypes.Validation.StoreValidation;
 using StoreDB = DiscountAggregator.DataBase.StoreDB;
+using MongoDB.Bson;
 
 namespace DiscountAggregator.Controllers
 {
@@ -15,9 +18,11 @@ namespace DiscountAggregator.Controllers
     public class StoreController : ControllerBase
     {
         private readonly StoreDB _storeDB;
+        private Func<string, bool> IdIsValid;
 
         public StoreController (StoreDB storeDB)
         {
+            IdIsValid = DiscountAggregator.AbstractTypes.Validation.IdValidation.IsValid;
             _storeDB = storeDB;
         }
 
@@ -33,7 +38,11 @@ namespace DiscountAggregator.Controllers
         [HttpGet("{id}", Name = "GetStore")]
         public ActionResult<Store> Get(string id)
         {
-            var store = _storeDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+
+            var store = _storeDB.Get(objectId);
 
             if(store == null)
             {
@@ -55,24 +64,30 @@ namespace DiscountAggregator.Controllers
 
         // POST: api/Store
         [HttpPost]
-        public ActionResult<Store> Create(Store store)
+        public ActionResult<StoreValidation> Create(StoreValidation store)
         {
-            return BadRequest();
-            _storeDB.Add(store);
-            return CreatedAtRoute("GetStore", new { id = store.Id.ToString() }, store);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _storeDB.Add((Store)store);
+            return Ok();
         }
 
         // PUT: api/Store/5
         [HttpPut("{id}")]
         public IActionResult Update (string id, Store storeIn)
         {
-            var store = _storeDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+
+            var store = _storeDB.Get(objectId);
 
             if (store == null)
             {
                 return NotFound();
             }
-            _storeDB.Update(id, storeIn);
+            _storeDB.Update(objectId, storeIn);
 
             return NoContent();
         }
@@ -81,15 +96,27 @@ namespace DiscountAggregator.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            var store = _storeDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+
+            var store = _storeDB.Get(objectId);
 
             if(store == null)
             {
                 return NotFound();
             }
 
-            _storeDB.Remove(store.Id);
+            _storeDB.Remove(store);
 
+            return NoContent();
+        }
+
+        //DELETE: api/Store/DeleteAll
+        [HttpDelete("DeleteAll")]
+        public IActionResult DeleteAll()
+        {
+            _storeDB.Clear();
             return NoContent();
         }
     }

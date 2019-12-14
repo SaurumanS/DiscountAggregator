@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using DiscountAggregator.AbstractTypes.Converters; //extension method : ToObjectId
 using ProductVariety = DiscountAggregator.AbstractTypes.ProductVariety;
+using ProductVarietyValidation = DiscountAggregator.AbstractTypes.Validation.ProductVarietyValidation;
 using ProductVarietyDB = DiscountAggregator.DataBase.ProductVarietyDB;
+using MongoDB.Bson;
 
 namespace DiscountAggregator.Controllers
 {
@@ -16,9 +19,11 @@ namespace DiscountAggregator.Controllers
     {
 
         private readonly ProductVarietyDB _productvarietyDB;
+        private Func<string, bool> IdIsValid;
 
         public ProductVarietyController(ProductVarietyDB productvarietyDB)
         {
+            IdIsValid = DiscountAggregator.AbstractTypes.Validation.IdValidation.IsValid;
             _productvarietyDB = productvarietyDB;
         }
 
@@ -32,7 +37,10 @@ namespace DiscountAggregator.Controllers
         [HttpGet("{id}", Name = "GetProductVariety")]
         public ActionResult<ProductVariety> Get(string id)
         {
-            var productvariety = _productvarietyDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+            var productvariety = _productvarietyDB.Get(objectId);
 
             if (productvariety == null)
             {
@@ -54,40 +62,57 @@ namespace DiscountAggregator.Controllers
 
         // POST: api/ProductVariety
         [HttpPost]
-        public ActionResult<ProductVariety> Create(ProductVariety productvariety)
+        public ActionResult<ProductVarietyValidation> Create(ProductVarietyValidation productVariety)
         {
-            _productvarietyDB.Add(productvariety);
-            return CreatedAtRoute("GetProductVariety", new { id = productvariety.Id.ToString() }, productvariety);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _productvarietyDB.Add((ProductVariety) productVariety);
+            return Ok();
         }
 
         // PUT: api/ProductVariety/5
         [HttpPut("{id}")]
         public IActionResult Update(string id, ProductVariety productvarietyIn)
         {
-            var productvariety = _productvarietyDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+            var productvariety = _productvarietyDB.Get(objectId);
 
             if (productvariety == null)
             {
                 return NotFound();
             }
-            _productvarietyDB.Update(id, productvarietyIn);
+            _productvarietyDB.Update(objectId, productvarietyIn);
 
             return NoContent();
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/ProductVariety/5
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            var productvariety = _productvarietyDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+            var productvariety = _productvarietyDB.Get(objectId);
 
             if (productvariety == null)
             {
                 return NotFound();
             }
 
-            _productvarietyDB.Remove(productvariety.Id);
+            _productvarietyDB.Remove(productvariety);
 
+            return NoContent();
+        }
+
+        // DELETE: api/DeleteAll
+        [HttpDelete("DeleteAll")]
+        public IActionResult DeleteAll()
+        {
+            _productvarietyDB.Clear();
             return NoContent();
         }
     }

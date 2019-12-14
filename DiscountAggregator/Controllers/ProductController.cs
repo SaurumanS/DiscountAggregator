@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using DiscountAggregator.AbstractTypes.Converters; //extension method : ToObjectId
 using Product = DiscountAggregator.AbstractTypes.Product;
 using ProductValidation = DiscountAggregator.AbstractTypes.Validation.ProductValidation;
 using ProductDB = DiscountAggregator.DataBase.ProductDB;
-
+using MongoDB.Bson;
 
 namespace DiscountAggregator.Controllers
 {
@@ -18,9 +19,11 @@ namespace DiscountAggregator.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ProductDB _productDB;
+        private Func<string, bool> IdIsValid;
 
         public ProductController(ProductDB productDB)
         {
+            IdIsValid = DiscountAggregator.AbstractTypes.Validation.IdValidation.IsValid;
             _productDB = productDB;
         }
 
@@ -37,7 +40,11 @@ namespace DiscountAggregator.Controllers
         [HttpGet("{id}", Name = "GetProduct")]
         public ActionResult<Product> Get(string id)
         {
-            var product = _productDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+
+            var product = _productDB.Get(objectId);
 
             if (product == null)
             {
@@ -46,8 +53,10 @@ namespace DiscountAggregator.Controllers
             return product;
         }
         [HttpGet("GetFromName/{name}")]
+        [DiscountAggregator.AbstractTypes.Validation.IdValidation(ErrorMessage ="Id is not correct. Check him")]
         public ActionResult<IEnumerable<Product>> GetFromName(string name)
         {
+
             var product = _productDB.GetFromName(name).ToList();
 
             if (product == null || product.Count==0)
@@ -59,36 +68,29 @@ namespace DiscountAggregator.Controllers
 
         // POST: api/Product
         [HttpPost]
-        public ActionResult<Product> Create(ProductValidation product)
+        public ActionResult<ProductValidation> Create(ProductValidation product)
         {
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(product);
-            if (!Validator.TryValidateObject(product, context, results, true))
-            {
-                foreach (var error in results)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-            }
-            else
-            {
-                Console.WriteLine("Пользователь прошел валидацию");
-            }
-            //_productDB.Add(product);
-            return CreatedAtRoute("GetProduct", new { id = product.Id.ToString() }, product);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            _productDB.Add((Product) product);
+            return Ok();
         }
 
         // PUT: api/Product/5
         [HttpPut("{id}")]
         public IActionResult Update(string id, Product productIn)
         {
-            var product = _productDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+
+            var product = _productDB.Get(objectId);
 
             if (product == null)
             {
                 return NotFound();
             }
-            _productDB.Update(id, productIn);
+            _productDB.Update(objectId, productIn);
 
             return NoContent();
         }
@@ -97,14 +99,18 @@ namespace DiscountAggregator.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            var product = _productDB.Get(id);
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+
+            var product = _productDB.Get(objectId);
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            _productDB.Remove(product.Id);
+            _productDB.Remove(product);
 
             return NoContent();
         }

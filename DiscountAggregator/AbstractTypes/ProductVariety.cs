@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DiscountAggregator.AbstractTypes
 {
-    public class ProductVariety
+    public class ProductVariety : IProductVariety
     {
 
         [BsonId]
