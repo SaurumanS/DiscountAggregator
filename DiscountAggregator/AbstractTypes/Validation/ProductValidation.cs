@@ -9,9 +9,8 @@ using Product = DiscountAggregator.AbstractTypes.Product;
 
 namespace DiscountAggregator.AbstractTypes.Validation
 {
-    public class ProductValidation : AbstractValidation, IProduct
+    public class ProductValidation : AbstractValidation
     {
-        public string Id { get; set; }
 
         [Required(ErrorMessage = "Name is null")]
         public string Name { get; set; }
@@ -25,28 +24,28 @@ namespace DiscountAggregator.AbstractTypes.Validation
         [IdValidation(ErrorMessage = "Product Type Id is incorrect. Check him.")]
         public string ProductType { get; set; } //Milk, Beer, Tea, Coffee ... (ID)
 
-        private double oldPrice = Double.NaN;
+        private double? oldPrice;
         [Required(ErrorMessage = "OldPrice is null")]
-        public double OldPrice //Without discount
+        public double? OldPrice //Without discount
         {
             get => oldPrice;
             set
             {
                 oldPrice = value;
-                if(!Double.IsNaN(NewPrice))
+                if(NewPrice != null)
                     AmountOfDiscount = DiscountCounter(oldPrice, NewPrice);
             }
         }
 
-        private double newPrice = Double.NaN;
+        private double? newPrice;
         [Required(ErrorMessage = "NewPrice is null")]
-        public double NewPrice //With discount
+        public double? NewPrice //With discount
         {
             get => newPrice;
             set
             {
                 newPrice = value;
-                if (!Double.IsNaN(OldPrice))
+                if (OldPrice != null)
                     AmountOfDiscount = DiscountCounter(OldPrice, newPrice);
             }
         }
@@ -64,8 +63,8 @@ namespace DiscountAggregator.AbstractTypes.Validation
         {
             Product product = new Product();
             product.Name = productValidation.Name;
-            product.NewPrice = productValidation.NewPrice;
-            product.OldPrice = productValidation.OldPrice;
+            product.NewPrice = Convert.ToDouble(productValidation.NewPrice);
+            product.OldPrice = Convert.ToDouble(productValidation.OldPrice);
             product.Photo = productValidation.Photo;
             product.ProductType = productValidation.ProductType;
             product.ProductVariety = productValidation.ProductVariety;

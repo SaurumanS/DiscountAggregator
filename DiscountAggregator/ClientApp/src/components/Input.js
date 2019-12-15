@@ -1,7 +1,5 @@
 ﻿import React, { Component } from 'react';
 
-let itemsVariety3 = ['orange', 'red', 'blue', 'purple'];
-let Variety = ['orange', 'red', 'blue', 'purple'];
 
 export class Input extends Component {
 
@@ -98,6 +96,15 @@ class Product extends React.Component {
             selectedType: null,
             newPrice: null,
             oldPrice: null,
+            errorsState: {
+                Name: [],
+                ProductVariety: [],
+                ProductType: [],
+                OldPrice: [],
+                NewPrice: [],
+                Photo: [],
+                Store: [],
+            }
         }
     }
 
@@ -140,7 +147,7 @@ class Product extends React.Component {
         const OldPrice = parseFloat(this.state.oldPrice);
         const pic_url = this.state.formValues['pic_url'];
         const selectedStore = this.state.selectedStore;
-
+        const _errors = this.state.errorsState;
 
         fetch('api/Product/', {
             method: 'POST',
@@ -158,7 +165,46 @@ class Product extends React.Component {
                 store: selectedStore
             })
 
-        }).then((response) => console.log(response));
+        }).then((error) => error.json())
+            .then((error) => {
+                console.log(error);
+                if (error.errors.hasOwnProperty('Name'))
+                    _errors.Name = error.errors.Name;
+                else
+                    _errors.Name = [];
+
+                if (error.errors.hasOwnProperty('Photo'))
+                    _errors.Photo = error.errors.Photo;
+                else
+                    _errors.Photo = [];
+
+                if (error.errors.hasOwnProperty('ProductVariety'))
+                    _errors.ProductVariety = error.errors.ProductVariety;
+                else
+                    _errors.ProductVariety = [];
+
+                if (error.errors.hasOwnProperty('ProductType'))
+                    _errors.ProductType = error.errors.ProductType;
+                else
+                    _errors.ProductType = [];
+
+                if (error.errors.hasOwnProperty('OldPrice'))
+                    _errors.OldPrice = error.errors.OldPrice;
+                else
+                    _errors.OldPrice = [];
+
+                if (error.errors.hasOwnProperty('NewPrice'))
+                    _errors.NewPrice = error.errors.NewPrice;
+                else
+                    _errors.NewPrice = [];
+
+                if (error.errors.hasOwnProperty('Store'))
+                    _errors.Store = error.errors.Store;
+                else
+                    _errors.Store = [];
+
+                this.setState({ errorsState: _errors });
+            })
 
         
     }
@@ -194,14 +240,18 @@ class Product extends React.Component {
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
-
+                <ul>
+                    {this.state.errorsState["Name"].map(error => <li>{error}</li>)}
+                </ul>
                 <label>ProductVariety:
                   <select value={this.state.selectedVariety}
                         onChange={this.handleChangeSelectedVariety.bind(this)} required>
                     {this.state.itemsVariety.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
                     </select>
                 </label>
-
+                <ul>
+                    {this.state.errorsState["ProductVariety"].map(error => <li>{error}</li>)}
+                </ul>
                 <br />
 
 
@@ -212,19 +262,31 @@ class Product extends React.Component {
                             {this.state.itemsType.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
                         </select>
                     </label>
+                    <ul>
+                        {this.state.errorsState["ProductType"].map(error => <li>{error}</li>)}
+                    </ul>
                 </div>
 
                 <label> NewPrice:<br />
                     <input type="number" name="NewPrice" placeholder="NewPrice" value={this.state.newPrice} onChange={(event) => this.setState({ newPrice: event.target.value })} />
-                </label><br />
+                </label>
+                <ul>
+                    {this.state.errorsState["NewPrice"].map(error => <li>{error}</li>)}
+                </ul><br />
 
                 <label> OldPrice:<br />
                     <input type="number" name="OldPrice" placeholder="OldPrice" value={this.state.oldPrice} onChange={(event) => this.setState({ oldPrice: event.target.value })} />
-                </label><br />
+                </label>
+                <ul>
+                    {this.state.errorsState["OldPrice"].map(error => <li>{error}</li>)}
+                </ul><br />
 
                 <label> pic_url:
                     <input type="text" name="pic_url" placeholder="pic_url" value={this.state.formValues["pic_url"]} onChange={this.handleChange.bind(this)} />
-                </label><br />
+                </label>
+                <ul>
+                    {this.state.errorsState["Photo"].map(error => <li>{error}</li>)}
+                </ul><br />
 
                 <label>Store:
                     <select value={this.state.selectedStore}
@@ -232,8 +294,10 @@ class Product extends React.Component {
                         {this.state.itemsStore.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
                     </select>
                 </label>
+                <ul>
+                    {this.state.errorsState["Store"].map(error => <li>{error}</li>)}
+                </ul>
                 <br />
-
                 <input classNameName="btn btn-primary" type="submit" value="Submit" />
             </form>
         )
@@ -245,7 +309,11 @@ class Shop extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formValues: {}
+            formValues: {},
+            errorsState: {
+                Name: [],
+                Photo: []
+            }
         }
     }
 
@@ -264,7 +332,7 @@ class Shop extends React.Component {
         event.preventDefault();
         const Name = this.state.formValues['name'];
         const Logo = this.state.formValues['logo_url'];
-
+        const _errors = this.state.errorsState;
         fetch('api/Store/', {
             method: 'POST',
             headers: {
@@ -273,10 +341,21 @@ class Shop extends React.Component {
             },
             body: JSON.stringify({
                 name: this.state.formValues['name'],
-                photo: this.state.formValues["logo_url"],
+                photo: this.state.formValues['logo_url'],
             })
-        })
-        alert('Request delivered')
+        }).then((error) => error.json())
+            .then((error) => {
+                console.log(error)
+                if (error.errors.hasOwnProperty('Name'))
+                    _errors.Name = error.errors.Name;
+                else 
+                    _errors.Name = [];
+                if (error.errors.hasOwnProperty('Photo'))
+                    _errors.Photo = error.errors.Photo;
+                else
+                    _errors.Photo = [];
+                this.setState({ errorsState: _errors });
+            })
         
     }
     render() {
@@ -285,12 +364,17 @@ class Shop extends React.Component {
 
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
-                </label><br />
-
+                </label>
+                <ul>
+                    {this.state.errorsState["Name"].map(error => <li>{error}</li>)}
+                </ul>
+                <br/>
                 <label> logo_url:
                     <input type="text" name="logo_url" placeholder="logo_url" value={this.state.formValues["logo_url"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
-
+                <ul>
+                    {this.state.errorsState["Photo"].map(error => <li>{error}</li>)}
+                </ul>
                 <input classNameName="btn btn-primary" type="submit" value="Submit" />
             </form>
         )
@@ -302,7 +386,10 @@ class ProductVariety extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formValues: {}
+            formValues: {},
+            errorsState: {
+                Name: []
+            }
         }
     }
 
@@ -320,7 +407,7 @@ class ProductVariety extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const Name = this.state.formValues['name'];
-       
+        const _errors = this.state.errorsState;
 
         fetch('api/ProductVariety/', {
             method: 'POST',
@@ -332,7 +419,15 @@ class ProductVariety extends React.Component {
                 name: Name,
             })
 
-        }).then((response) => console.log(response));
+        }).then((error) => error.json())
+            .then((error) => {
+                console.log(error)
+                if (error.errors.hasOwnProperty('Name'))
+                    _errors.Name = error.errors.Name;
+                else
+                    _errors.Name = [];
+                this.setState({ errorsState: _errors });
+            })
 
 
     }
@@ -342,7 +437,9 @@ class ProductVariety extends React.Component {
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
-
+                <ul>
+                    {this.state.errorsState["Name"].map(error => <li>{error}</li>)}
+                </ul>
                 <input classNameName="btn btn-primary" type="submit" value="Submit" />
             </form>
         )
@@ -360,6 +457,10 @@ class ProductType extends React.Component {
             Variety: [],
             items: [],
             selected: "",
+            errorsState: {
+                Name: [],
+                VarietyID: []
+            }
         }
     }
    
@@ -379,6 +480,7 @@ class ProductType extends React.Component {
         event.preventDefault();
         const Name = this.state.formValues['name'];
         const ProductVariety = this.state.selected;
+        const _errors = this.state.errorsState;
 
         fetch('api/ProductType/', {
             method: 'POST',
@@ -390,7 +492,19 @@ class ProductType extends React.Component {
                 name: Name,
                 varietyid: ProductVariety,
             })
-        }).then((response) => console.log(response));
+        }).then((error) => error.json())
+            .then((error) => {
+                console.log(error)
+                if (error.errors.hasOwnProperty('Name'))
+                    _errors.Name = error.errors.Name;
+                else
+                    _errors.Name = [];
+                if (error.errors.hasOwnProperty('VarietyID'))
+                    _errors.VarietyID = error.errors.VarietyID;
+                else
+                    _errors.VarietyID = [];
+                this.setState({ errorsState: _errors });
+            })
 
     }
     componentDidMount() {
@@ -412,12 +526,17 @@ class ProductType extends React.Component {
                 <label> Name:
                     <input type="text" name="name" placeholder="Name" value={this.state.formValues["name"]} onChange={this.handleChange.bind(this)} />
                 </label><br />
-                     
+                <ul>
+                    {this.state.errorsState["Name"].map(error => <li>{error}</li>)}
+                </ul>
                 <h5>ProductVariety:</h5>
-                    <select value={this.state.selected}
-                        onChange={(event) => this.setState({ selected: event.target.value })}>
-                        {this.state.items.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
-                    </select>
+                <select value={this.state.selected}
+                    onChange={(event) => this.setState({ selected: event.target.value })}>
+                    {this.state.items.map((item) => <option key={item.value} value={item.value}>{item.display}</option>)}
+                </select>
+                <ul>
+                    {this.state.errorsState["VarietyID"].map(error => <li>{error}</li>)}
+                </ul>
                 <br />
 
                 <input classNameName="btn btn-primary" type="submit" value="Submit" />

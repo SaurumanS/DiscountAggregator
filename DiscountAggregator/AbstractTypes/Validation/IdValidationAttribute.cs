@@ -11,6 +11,7 @@ namespace DiscountAggregator.AbstractTypes.Validation
     {
         public override bool IsValid(object value)
         {
+            if (value == null) return false;
             string id = value.ToString();
             bool result = IdValidation.IsValid(id);
             return result;
