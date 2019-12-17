@@ -10,8 +10,10 @@ namespace DiscountAggregator.AbstractTypes.Validation
 {
     public abstract class AbstractValidation
     {
-        public int DiscountCounter(double? oldPrice, double? newPrice)
+        public static int DiscountCounter(double? oldPrice, double? newPrice)
         {
+            if (oldPrice == null || newPrice == null)
+                throw new ArgumentException("Input arguments is null. How you did this?");
             double _old = Convert.ToDouble(oldPrice);
             double _new = Convert.ToDouble(newPrice);
             double result;

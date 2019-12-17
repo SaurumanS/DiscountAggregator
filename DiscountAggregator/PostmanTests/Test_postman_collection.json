@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "3e6f8faa-a3a2-4e77-8b92-84f119be24e9",
+		"name": "Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://localhost:44393/api/Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "be7c4cad-aa12-4f4a-bc92-58922059a6e0",
+						"exec": [
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Id Test\"] = jsonData.id = responseBody.has (\"5deaa2a8b8ead81a285fc951\");",
+							"tests[\"Old Price Test\"] = jsonData.oldPrice = responseBody.has (\"80\");",
+							"tests[\"New Price Test\"] = jsonData.newPrice = responseBody.has (\"35\");",
+							"tests[\"StoreID Test\"] = jsonData.store = responseBody.has(\"5dea562bb12b743f78443325\");",
+							"tests[\"Name Test\"] = jsonData.name = responseBody.has(\"Heineken\");",
+							"tests[\"Photo Path Test\"] = jsonData.photo = responseBody.has(\"https://wine-shopper.ru/image/cache/catalog/Beer/heineken-0-33l-600x600.jpg\");",
+							"",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Full Body Test\", function () {",
+							"    pm.response.to.have.body('[{\"id\":\"5deaa2a8b8ead81a285fc951\",\"name\":\"Heineken\",\"productVariety\":\"5dea55adb12b743f78443323\",\"productType\":\"5dea55b9b12b743f78443324\",\"oldPrice\":80,\"newPrice\":35,\"amountOfDiscount\":-56,\"photo\":\"https://wine-shopper.ru/image/cache/catalog/Beer/heineken-0-33l-600x600.jpg\",\"store\":\"5dea562bb12b743f78443325\"}]');",
+							"});",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"id\": \"5dea5e1cdf03cc2b74b5d471\",\r\n        \"name\": \"Stinky Milk\",\r\n        \"productVariety\": \"5dea5d8ddf03cc2b74b5d46d\",\r\n        \"productType\": \"5dea5db2df03cc2b74b5d46f\",\r\n        \"oldPrice\": \"51515\",\r\n        \"newPrice\": \"3123\",\r\n        \"amountOfDiscount\": 0,\r\n        \"photo\": \"5dd27d85780276116cb32972\",\r\n        \"store\": \"5dd27d85780276116cb32972\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44393/api/Product/GetFromName/Heineken",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44393",
+					"path": [
+						"api",
+						"Product",
+						"GetFromName",
+						"Heineken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44393/api/ProductType/5dea55b9b12b743f78443324",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4da7df97-86c7-436e-bfea-5d489bd71d4d",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Id Test\"] = jsonData.id = responseBody.has (\"5dea55b9b12b743f78443324\");",
+							"tests[\"VarietyID Test\"] = jsonData.store = responseBody.has(\"5dea55adb12b743f78443323\");",
+							"tests[\"Name Test\"] = jsonData.name = responseBody.has(\"Beer\");",
+							"",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Full Body Test\", function () {",
+							"    pm.response.to.have.body('{\"id\":\"5dea55b9b12b743f78443324\",\"name\":\"Beer\",\"varietyID\":\"5dea55adb12b743f78443323\"}');",
+							"});",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44393/api/ProductType/5dea55b9b12b743f78443324",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44393",
+					"path": [
+						"api",
+						"ProductType",
+						"5dea55b9b12b743f78443324"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44393/api/ProductVariety/5dea55adb12b743f78443323",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a424bfae-c251-43bf-8080-9c369962d323",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Id Test\"] = jsonData.id = responseBody.has (\"5dea55adb12b743f78443323\");",
+							"tests[\"Name Test\"] = jsonData.name = responseBody.has(\"Alcohol\");",
+							"",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Full Body Test\", function () {",
+							"    pm.response.to.have.body('{\"id\":\"5dea55adb12b743f78443323\",\"name\":\"Alcohol\"}');",
+							"});",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44393/api/ProductVariety/5dea55adb12b743f78443323",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44393",
+					"path": [
+						"api",
+						"ProductVariety",
+						"5dea55adb12b743f78443323"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44393/api/Store/5dea562bb12b743f78443325",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "89046e71-ed07-4d01-bc61-98de253b7356",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Id Test\"] = jsonData.id = responseBody.has (\"5dea562bb12b743f78443325\");",
+							"tests[\"Photo Test\"] = jsonData.store = responseBody.has(\"https://yandex.ru/images/search?pos=47&from=tabbar&img_url=https%3A%2F%2Fwww.eat-berlin.de%2Fwp-content%2Fuploads%2Fmetro-Photo-1024x768.jpg&text=metro+store&rpt=simage\");",
+							"tests[\"Name Test\"] = jsonData.name = responseBody.has(\"Metro\");",
+							"",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Full Body Test\", function () {",
+							"    pm.response.to.have.body('{\"id\":\"5dea562bb12b743f78443325\",\"name\":\"Metro\",\"photo\":\"https://yandex.ru/images/search?pos=47&from=tabbar&img_url=https%3A%2F%2Fwww.eat-berlin.de%2Fwp-content%2Fuploads%2Fmetro-Photo-1024x768.jpg&text=metro+store&rpt=simage\"}');",
+							"});",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44393/api/Store/5dea562bb12b743f78443325",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44393",
+					"path": [
+						"api",
+						"Store",
+						"5dea562bb12b743f78443325"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
