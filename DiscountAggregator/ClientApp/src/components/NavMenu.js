@@ -29,18 +29,16 @@ export class NavMenu extends Component {
                     <NavItem>
                         <NavLink tag={Link} to="/"><span className="icon fas fa-home"></span></NavLink>
                     </NavItem>
+                         
                     <NavItem>
-                        <NavLink tag={Link} to="/map"><span className="icon fas fa-fire-extinguisher"></span></NavLink>
-                    </NavItem>                
-                    <NavItem>
-                        <NavLink tag={Link} to="/counter"><span className="icon fas fa-shopping-basket"></span></NavLink>
+                        <NavLink tag={Link} to="/counter"><span className="icon fas fa-cash-register"></span></NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} to="/fetch-data"><span className="icon fas fa-map-signs"></span></NavLink>
-                    </NavItem>                                    
-                    <NavItem>
-                        <NavLink ><span className="icon fas fa-shopping-basket"></span></NavLink>
+                        <NavLink tag={Link} to="/fetch-data"><span className="icon fas fa-shopping-basket"></span></NavLink>
                     </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/"><span className="icon fas fa-map-signs"></span></NavLink>
+                    </NavItem>                                                      
                     <NavItem>
                         <NavLink tag={Link} to="/input"><span className="icon fas fa-cog"></span></NavLink>
                     </NavItem>

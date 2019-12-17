@@ -69,7 +69,7 @@ body {
 @media screen and (max-width: 480px) {
 
     html, body {
-        min-width: 320px;
+        min-width: 1px;
     }
 }
 
@@ -896,6 +896,7 @@ input[type="radio"] {
     border: 0;
     display: inline-block;
     position: relative;
+    
 }
 
     .image img {
@@ -913,8 +914,8 @@ input[type="radio"] {
 @media screen and (max-width: 480px) {
 
     .image.left, .image.right {
-        max-width: 100%;
-        width: 100%;
+        max-width: 50%;
+        width: 50%;
     }
 }
 
