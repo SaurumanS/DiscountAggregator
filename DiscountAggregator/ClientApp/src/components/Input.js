@@ -9,7 +9,7 @@ export class Input extends Component {
 
 
                 <header id="header">
-                    <div>Snapshot <span>by TEMPLATED</span></div>
+                    <div>Enter your data <span>Duuuuuude</span></div>
                 </header>
 
             <div>
