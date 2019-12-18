@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { MapY } from './components/Map';
 import { FetchData } from './components/FetchData';
+
 import { Counter } from './components/Counter';
 import { Input } from './components/Input';
 
@@ -19,6 +20,7 @@ export default class App extends Component {
         <Route path='/map' component={MapY} />
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />     
+        
         <Route path='/input' component={Input} />     
       </Layout>
     );

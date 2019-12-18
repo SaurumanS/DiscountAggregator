@@ -14,8 +14,6 @@ export class Home extends Component {
             selected: "",
         }
     }
-   
-   
 
     render() {     
         return (
@@ -46,7 +44,7 @@ export class Home extends Component {
                       <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
                       <li><a href='https://www.google.com.ua/?hl=ru'>Google</a> for solve most problems</li>
                       <li><a href='https://vk.com/id480083267'>Saly</a> for solve all problems in general</li>
-                      <li><a href='https://vk.com/im?sel=72561927'>Strelkov</a> for tests and screams</li>
+                      <li><a href='https://vk.com/anstxxii'>Strelkov</a> for tests and screams</li>
                       <li><a href='https://vk.com/lewsup'>Ritter</a> for an ugly front</li>
                   </ul>
                 
