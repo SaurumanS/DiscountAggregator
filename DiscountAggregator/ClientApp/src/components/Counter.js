@@ -28,7 +28,7 @@ export class Counter extends Component {
             <div class="content">           
                 {types.map(type =>
                     <div class="media all people" key={type.name}>
-                        <a href={type.name} style={{ maxHeight: "190px" }}>
+                        <a href={type.name} style={{ maxHeight: "25vh" }}>
                             <img src={type.photo} alt="" title={type.name} />
                         </a>                       
                     </div>
@@ -42,7 +42,7 @@ export class Counter extends Component {
             ? <p><em>Loading...</em></p>
             : Counter.renderTypes(this.state.types);
         return (
-            <div class="page-wrap" style={{ minHeight: "1080px" }}>
+            <div class="page-wrap" style={{ minHeight: "100vh" }}>
                 <section id="main">
 
                     <header id="header">

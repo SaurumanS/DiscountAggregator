@@ -37,6 +37,9 @@ export class NavMenu extends Component {
                         <NavLink tag={Link} to="/fetch-data"><span className="icon fas fa-shopping-basket"></span></NavLink>
                     </NavItem>
                     <NavItem>
+                        <NavLink tag={Link} to="/map"><span className="icon fas fa-map-signs"></span></NavLink>
+                    </NavItem>
+                    <NavItem>
                         <a href="https://yandex.ru/maps/35/krasnodar/?ll=38.975313%2C45.035470&mode=search&sll=38.975313%2C45.035470&sspn=0.179729%2C0.089583&text=%D0%BC%D0%B0%D0%B3%D0%B0%D0%B7%D0%B8%D0%BD%D1%8B&z=13"><span className="icon fas fa-map-signs"></span></a>
                     </NavItem>                                                      
                     <NavItem>

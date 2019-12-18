@@ -85,7 +85,7 @@ class Product extends React.Component {
 
         this.setState({ selectedVariety: event.target.value, itemsType: [] })
         const SelectedVariety = this.state.selectedVariety;
-        let url = "api/ProductType/GetFromId/" + event.target.value;
+        let url = "api/Product/GetFrom/" + event.target.value;
         fetch(url)
             .then((response) => {
                 return response.json();
