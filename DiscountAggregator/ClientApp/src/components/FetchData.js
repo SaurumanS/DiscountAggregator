@@ -69,35 +69,27 @@ class Product extends React.Component {
             itemsVariety: [],
             itemsType: [],
             itemsStore: [],
-            selectedVariety: null,
-            selectedStore: null,
-            selectedType: null,
-            newPrice: null,
-            oldPrice: null,
-            display: ""
+            itemsProduct: [],
+            display: "",
+            error: null
         }
     }
 
    
 
     handleChangeSelectedVariety(event) {
-        event.preventDefault();
-
-        this.setState({ selectedVariety: event.target.value, itemsType: [] })
-        const SelectedVariety = this.state.selectedVariety;
-        let url = "api/Product/GetFrom/" + event.target.value;
+        let url = "api/Product/GetFromVarietyID/" + event.target.id;
         fetch(url)
             .then((response) => {
                 return response.json();
             })
             .then(data => {
-                let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
-                this.setState({ itemsType: itemsFromApi });
+                //let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
+                this.setState({ itemsProduct: data });
 
             }).catch(e => {
                 this.setState({ error: e.message })
             });
-        alert(event.target.value);
     }
    
  
@@ -118,18 +110,23 @@ class Product extends React.Component {
     render() {
         return (
             <div> 
-                    <ul class="tabs" onClick={this.handleChangeSelectedVariety.bind(this)} required>
+                    <ul class="tabs" required>
                         {this.state.itemsVariety.map(variety =>
                             <li>
-                                <input classNameName="btn btn-primary" type="submit" value={variety.display} />
+                                <input 
+                                    classNameName="btn btn-primary"
+                                    id={variety.value}
+                                    type="submit"
+                                    onClick={(event) => this.handleChangeSelectedVariety(event)}
+                                    value={variety.display}/>
                             </li>
                         )}
                     </ul>
 
-                   
+
 
                 <section className="row">
-                    {this.state.itemsType.map((item) =>
+                    {this.state.itemsProduct.map((item) =>
                         <div class="col-md-4" key={item.name}>
                             <div class="card mb-3" style={{ maxWidth: "540px"}}>
                             <div class="row no-gutters">
@@ -139,8 +136,9 @@ class Product extends React.Component {
                                     <div class="col-md-8">
                                         <div class="card-body">
                                             <h5 class="card-title">{item.name}</h5>
-                                            <p class="card-text">{item.value}</p>
-                                            <p class="card-text">{item.display}</p>
+                                            <p class="card-text">{item.photo}</p>
+                                            <p class="card-text">{item.oldprice}</p>
+                                            <p class="card-text">{item.newprice}</p>
                                             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                                         </div>
                                     </div>

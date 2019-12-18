@@ -47,6 +47,10 @@ namespace DiscountAggregator.DataBase
         {
             return _products.Find(Product => ObjectId.Equals(id,Product.ProductVariety)).ToEnumerable();
         }
+        public IEnumerable<Product> GetFromStoreID(ObjectId id)
+        {
+            return _products.Find(Product => ObjectId.Equals(id, Product.Store)).ToEnumerable();
+        }
 
         public IEnumerable<Product> GetFromTypeID(ObjectId id)
         {

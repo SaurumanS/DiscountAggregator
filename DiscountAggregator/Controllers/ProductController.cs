@@ -65,11 +65,27 @@ namespace DiscountAggregator.Controllers
             }
             return product;
         }
+        [HttpGet("GetFromStoreID/{id}")]
+        public ActionResult<IEnumerable<Product>> GetFromStoreID(string id)
+        {
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
+            ObjectId objectId = id.ToObjectId();
+
+            var product = _productDB.GetFromStoreID(objectId).ToList();
+
+            if (product == null || product.Count == 0)
+            {
+                return NotFound();
+            }
+            return product;
+        }
 
         [HttpGet("GetFromVarietyID/{id}")]
-        [DiscountAggregator.AbstractTypes.Validation.IdValidation(ErrorMessage = "Id is not correct. Check him")]
         public ActionResult<IEnumerable<Product>> GetFromVarietyID(string id)
         {
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
             ObjectId objectId = id.ToObjectId();
 
             var product = _productDB.GetFromVarietyID(objectId).ToList();
@@ -82,9 +98,10 @@ namespace DiscountAggregator.Controllers
         }
 
         [HttpGet("GetFromTypeID/{id}")]
-        [DiscountAggregator.AbstractTypes.Validation.IdValidation(ErrorMessage = "Id is not correct. Check him")]
         public ActionResult<IEnumerable<Product>> GetFromTypeID(string id)
         {
+            if (!IdIsValid(id))
+                return BadRequest("Id is incorrect");
             ObjectId objectId = id.ToObjectId();
 
             var product = _productDB.GetFromTypeID(objectId).ToList();
