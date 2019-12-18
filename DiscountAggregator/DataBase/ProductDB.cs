@@ -43,6 +43,16 @@ namespace DiscountAggregator.DataBase
             return _products.Find(Product => Product.Name == name).ToEnumerable();
         }
 
+        public IEnumerable<Product> GetFromVarietyID(ObjectId id)
+        {
+            return _products.Find(Product => ObjectId.Equals(id,Product.ProductVariety)).ToEnumerable();
+        }
+
+        public IEnumerable<Product> GetFromTypeID(ObjectId id)
+        {
+            return _products.Find(Product => ObjectId.Equals(id, Product.ProductType)).ToEnumerable();
+        }
+
         public void Remove(Product removableProduct)
         {
             _products.DeleteOne(Product =>  ObjectId.Equals(removableProduct.Id, Product.Id));

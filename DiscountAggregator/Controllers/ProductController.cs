@@ -66,6 +66,36 @@ namespace DiscountAggregator.Controllers
             return product;
         }
 
+        [HttpGet("GetFromVarietyID/{id}")]
+        [DiscountAggregator.AbstractTypes.Validation.IdValidation(ErrorMessage = "Id is not correct. Check him")]
+        public ActionResult<IEnumerable<Product>> GetFromVarietyID(string id)
+        {
+            ObjectId objectId = id.ToObjectId();
+
+            var product = _productDB.GetFromVarietyID(objectId).ToList();
+
+            if (product == null || product.Count == 0)
+            {
+                return NotFound();
+            }
+            return product;
+        }
+
+        [HttpGet("GetFromTypeID/{id}")]
+        [DiscountAggregator.AbstractTypes.Validation.IdValidation(ErrorMessage = "Id is not correct. Check him")]
+        public ActionResult<IEnumerable<Product>> GetFromTypeID(string id)
+        {
+            ObjectId objectId = id.ToObjectId();
+
+            var product = _productDB.GetFromTypeID(objectId).ToList();
+
+            if (product == null || product.Count == 0)
+            {
+                return NotFound();
+            }
+            return product;
+        }
+
         // POST: api/Product
         [HttpPost]
         public ActionResult<ProductValidation> Create(ProductValidation product)
