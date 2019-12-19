@@ -29,7 +29,7 @@ export class MapY extends Component {
                             <div id="map-basics">
                                 {showMap &&
 
-                                    <Map state={mapState} height={680} width={1550} />}
+                                    <Map state={mapState} height={580} width={1300} />}
 
                               
                                

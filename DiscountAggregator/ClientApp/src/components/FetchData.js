@@ -91,6 +91,7 @@ class Product extends React.Component {
                 .then(data => {
                     //let itemsFromApi = data.map(item => { return { value: item.id, display: item.name } })
                     this.setState({ itemsProduct: data });
+                    console.log(data);
 
                 }).catch(e => {
                     this.setState({ error: e.message })
@@ -142,9 +143,10 @@ class Product extends React.Component {
                                     <div class="col-md-8">
                                         <div class="card-body">
                                             <h5 class="card-title">{item.name}</h5>
-                                            <p class="card-text">{toString( item.oldprice)}</p>
-                                            <p class="card-text">{toString( item.dicountofamount)}</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <p class="card-text">{item.oldPrice} Rub</p>
+                                            <p class="card-text">{item.newPrice} Rub</p>
+                                            <p class="card-text">Sale {item.amountOfDiscount}%</p>
+                                            
                                         </div>
                                     </div>
                                 </div>

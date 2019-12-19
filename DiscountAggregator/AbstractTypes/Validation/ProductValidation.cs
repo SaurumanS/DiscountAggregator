@@ -17,7 +17,7 @@ namespace DiscountAggregator.AbstractTypes.Validation
 
         [Required(ErrorMessage = "ProductVariety Id is null")]
         [IdValidation(ErrorMessage = "Product Variety Id is incorrect. Check him.")]
-        public string ProductVariety { get; set; } //Alcohol, Milk Products, Fruits and Vegetables... (ID)
+        public string ProductVariety { get; set; } //Alcohol, Milk Products, Fruitc:\Users\Saurumans\source\repos\DiscountAggregator\DiscountAggregator\AbstractTypes\Validation\ProductValidation.css and Vegetables... (ID)
 
         
         [Required(ErrorMessage = "ProductType Id is null")]
