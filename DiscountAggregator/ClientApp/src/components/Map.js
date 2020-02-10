@@ -30,7 +30,7 @@ export class MapY extends Component {
                                 {showMap &&
 
                                     <Map state={mapState} height={580} width={1300} />}
-
+                                3
                               
                                
                             </div>
